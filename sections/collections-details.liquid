@@ -1,0 +1,309 @@
+{{ 'collections-details.css' | asset_url | stylesheet_tag }}
+
+<div class="lookbook " data-section-id="{{ section.id }}" id="lookbook-{{ section.id }}"
+    style="--accent: {{ section.settings.accent_color }};">
+
+    <nav class="lookbook__nav">
+
+        {%- if section.settings.collection_1 != blank -%}
+        <button type="button" class="lookbook__tab is-active" data-target="look-1-{{ section.id }}" aria-pressed="true">
+            <span class="lookbook__tab-index">01</span>
+            <span class="lookbook__tab-label">
+                {{ section.settings.collection_1.title }}
+            </span>
+        </button>
+        {%- endif -%}
+
+        {%- if section.settings.collection_2 != blank -%}
+        <button type="button" class="lookbook__tab" data-target="look-2-{{ section.id }}" aria-pressed="false">
+            <span class="lookbook__tab-index">02</span>
+            <span class="lookbook__tab-label">
+                {{ section.settings.collection_2.title }}
+            </span>
+        </button>
+        {%- endif -%}
+
+        <span class="lookbook__nav-indicator"></span>
+    </nav>
+
+
+    {%- comment -%}
+    ---------- Look 01 ----------
+    {%- endcomment -%}
+
+    {%- if section.settings.collection_1 != blank -%}
+
+    {%- assign collection_1 = section.settings.collection_1 -%}
+
+    {%- if section.settings.background_image_1 != blank -%}
+    {%- assign bg_1 = section.settings.background_image_1 | image_url: width: 1800 -%}
+
+    {%- elsif collection_1.image != blank -%}
+    {%- assign bg_1 = collection_1.image | image_url: width: 1800 -%}
+
+    {%- elsif collection_1.featured_image != blank -%}
+    {%- assign bg_1 = collection_1.featured_image | image_url: width: 1800 -%}
+    {%- endif -%}
+
+
+    <section class="lookbook__panel is-active" id="look-1-{{ section.id }}" aria-hidden="false">
+
+        <div class="lookbook__frame">
+
+            {%- if bg_1 -%}
+            <img class="lookbook__image" src="{{ bg_1 }}" alt="{{ collection_1.title | escape }}" loading="lazy">
+            {%- endif -%}
+
+            <div class="lookbook__scrim"></div>
+
+            <div class="lookbook__caption">
+                <p class="lookbook__eyebrow">
+                    {{ section.settings.title_text }}
+                </p>
+
+                <p class="lookbook__desc">
+                    {{ section.settings.desc_text }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="lookbook__body">
+
+            <span class="lookbook__ghost-index" aria-hidden="true">
+                01
+            </span>
+
+            <h2 class="lookbook__collection-title">
+                {{ collection_1.title }}
+            </h2>
+
+
+            <div class="lookbook__grid">
+
+                {%- for product in collection_1.products limit: section.settings.products_limit -%}
+
+                <div class="lookbook__card">
+
+                    {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: 'portrait',
+                    show_secondary_image: true,
+                    show_vendor: false,
+                    show_rating: false,
+                    lazy_load: true,
+                    section_id: section.id
+                    %}
+
+                </div>
+
+                {%- endfor -%}
+
+            </div>
+
+
+            <a href="{{ collection_1.url }}" class="lookbook__cta">
+                {{ section.settings.cta_label }}
+
+                <span class="lookbook__cta-arrow" aria-hidden="true">
+                    &rarr;
+                </span>
+            </a>
+
+        </div>
+
+    </section>
+
+    {%- endif -%}
+
+
+
+    {%- comment -%}
+    ---------- Look 02 ----------
+    {%- endcomment -%}
+
+    {%- if section.settings.collection_2 != blank -%}
+
+    {%- assign collection_2 = section.settings.collection_2 -%}
+
+    {%- if section.settings.background_image_2 != blank -%}
+    {%- assign bg_2 = section.settings.background_image_2 | image_url: width: 1800 -%}
+
+    {%- elsif collection_2.image != blank -%}
+    {%- assign bg_2 = collection_2.image | image_url: width: 1800 -%}
+
+    {%- elsif collection_2.featured_image != blank -%}
+    {%- assign bg_2 = collection_2.featured_image | image_url: width: 1800 -%}
+    {%- endif -%}
+
+
+    <section class="lookbook__panel" id="look-2-{{ section.id }}" aria-hidden="true">
+
+        <div class="lookbook__frame">
+
+            {%- if bg_2 -%}
+            <img class="lookbook__image" src="{{ bg_2 }}" alt="{{ collection_2.title | escape }}" loading="lazy">
+            {%- endif -%}
+
+            <div class="lookbook__scrim"></div>
+
+            <div class="lookbook__caption">
+                <p class="lookbook__eyebrow">
+                    {{ section.settings.title_text }}
+                </p>
+
+                <p class="lookbook__desc">
+                    {{ section.settings.desc_text }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="lookbook__body">
+
+            <span class="lookbook__ghost-index" aria-hidden="true">
+                02
+            </span>
+
+            <h2 class="lookbook__collection-title">
+                {{ collection_2.title }}
+            </h2>
+
+
+            <div class="lookbook__grid">
+
+                {%- for product in collection_2.products limit: section.settings.products_limit -%}
+
+                <div class="lookbook__card">
+
+                    {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: 'portrait',
+                    show_secondary_image: true,
+                    show_vendor: false,
+                    show_rating: false,
+                    lazy_load: true,
+                    section_id: section.id
+                    %}
+
+                </div>
+
+                {%- endfor -%}
+
+            </div>
+
+
+            <a href="{{ collection_2.url }}" class="lookbook__cta">
+                {{ section.settings.cta_label }}
+
+                <span class="lookbook__cta-arrow" aria-hidden="true">
+                    &rarr;
+                </span>
+            </a>
+
+        </div>
+
+    </section>
+
+    {%- endif -%}
+
+</div>
+
+
+<script src="{{ 'colletions-details.js' | asset_url }}" defer></script>
+
+
+{% schema %}
+
+{
+"name": "Collection Lookbook",
+
+"settings": [
+
+{
+"type": "text",
+"id": "title_text",
+"label": "Section title",
+"default": "The Edit"
+},
+
+{
+"type": "textarea",
+"id": "desc_text",
+"label": "Section description",
+"default": "Two looks, built for layering."
+},
+
+{
+"type": "text",
+"id": "cta_label",
+"label": "Button label",
+"default": "View the full look"
+},
+
+{
+"type": "color",
+"id": "accent_color",
+"label": "Accent color",
+"default": "#565A44"
+},
+
+{
+"type": "range",
+"id": "products_limit",
+"label": "Products per look",
+"min": 2,
+"max": 12,
+"step": 1,
+"default": 6
+},
+
+{
+"type": "header",
+"content": "Look 01"
+},
+
+{
+"type": "collection",
+"id": "collection_1",
+"label": "Collection"
+},
+
+{
+"type": "image_picker",
+"id": "background_image_1",
+"label": "Background image (optional)",
+"info": "Leave empty to use the collection's own image."
+},
+
+{
+"type": "header",
+"content": "Look 02"
+},
+
+{
+"type": "collection",
+"id": "collection_2",
+"label": "Collection"
+},
+
+{
+"type": "image_picker",
+"id": "background_image_2",
+"label": "Background image (optional)",
+"info": "Leave empty to use the collection's own image."
+}
+
+],
+
+"presets": [
+{
+"name": "Collection Lookbook"
+}
+]
+
+}
+
+{% endschema %}

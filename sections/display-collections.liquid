@@ -1,0 +1,321 @@
+<div class="display-collections container">
+    <div class="display-collections__header">
+        <h1 class="display-collections__title">{{ section.settings.text }}</h1>
+        {% if section.settings.desc != blank %}
+        <p class="display-collections__desc">{{ section.settings.desc }}</p>
+        {% endif %}
+    </div>
+
+    <div class="collections-grid" id="collections-{{ section.id }}">
+        {% for block in section.blocks %}
+        <div class="collection-card collection-card--{{ forloop.index }}"
+            style="--card-bg: {{ block.settings.bg | default: '#eaeaea' }};" {{ block.shopify_attributes }}>
+            <div class="collection-card__media">
+                {% case block.settings.bg_type %}
+                {% when 'image' %}
+                {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', class:
+                'collection-card__image', sizes: '(min-width: 990px) 800px, 90vw' }}
+                {% else %}
+                <div class="collection-card__placeholder" aria-hidden="true"></div>
+                {% endif %}
+
+                {% when 'gradient' %}
+                <div class="collection-card__gradient"
+                    style="background: linear-gradient({{ block.settings.gradient_direction | default: '135deg' }}, {{ block.settings.gradient_start | default: '#a18cd1' }}, {{ block.settings.gradient_end | default: '#fbc2eb' }});">
+                </div>
+
+                {% else %}
+                <div class="collection-card__placeholder" aria-hidden="true"></div>
+                {% endcase %}
+            </div>
+
+            <div class="collection-card__overlay"></div>
+
+            <div class="collection-card__content">
+                {% if block.settings.eyebrow != blank %}
+                <span class="collection-card__eyebrow" style="color :{{ block.settings.eyebrow_color}}">{{
+                    block.settings.eyebrow }}</span>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                <h3 class="collection-card__title" style="color :{{ block.settings.title_color}}">{{
+                    block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                <p class="collection-card__text" style="color :{{ block.settings.text_color}}">{{ block.settings.text }}
+                </p>
+                {% endif %}
+                {% if block.settings.button_label != blank %}
+                <a {% if block.settings.link !=blank %} href="{{ block.settings.link }}" {% else %} role="button"
+                    aria-disabled="true" {% endif %} class="collection-card__btn">
+                    {{ block.settings.button_label }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<style>
+    .display-collections {
+        background-color: #f5f5f5;
+        padding: 40px 16px;
+    }
+
+    .display-collections__header {
+        text-align: {
+                {
+                section.settings.text_position
+            }
+        }
+
+        ;
+        max-width: 1000px;
+        margin: 0 auto 24px;
+    }
+
+    .display-collections__title {
+        font-size: clamp(22px, 3.2vw, 36px);
+        font-weight: 700;
+        margin: 0 0 8px;
+    }
+
+    .display-collections__desc {
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        opacity: .95;
+        font-weight: 400;
+    }
+
+    /* Desktop mosaic grid */
+    .collections-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 16px;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 10px 3rem 10px 3rem;
+    }
+
+    .collection-card {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        min-height: 320px;
+        background: var(--card-bg, #eaeaea);
+        isolation: isolate;
+    }
+
+    .collection-card__media {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .collection-card__image,
+    .collection-card__placeholder {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .collection-card__gradient {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .collection-card__placeholder {
+        background: linear-gradient(135deg, #ddd, #f1f1f1);
+    }
+
+    .collection-card__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5));
+        z-index: 1;
+    }
+
+    .collection-card__content {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .collection-card__eyebrow {
+        font-size: 12px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        opacity: .9;
+    }
+
+    .collection-card__title {
+        font-size: clamp(18px, 2.4vw, 28px);
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .collection-card__text {
+        margin: 0;
+        opacity: .9;
+    }
+
+    .collection-card__btn {
+        align-self: flex-start;
+        margin-top: 8px;
+        background: #111;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform .15s ease, background .15s ease;
+    }
+
+    .collection-card__btn:hover {
+        transform: translateY(-1px);
+        background: #000;
+    }
+
+    /* Creative spans for 4-up mosaic */
+    .collection-card--1 {
+        grid-column: span 7;
+        min-height: 420px;
+    }
+
+    .collection-card--2 {
+        grid-column: span 5;
+        min-height: 420px;
+    }
+
+    .collection-card--3 {
+        grid-column: span 5;
+        min-height: 360px;
+    }
+
+    .collection-card--4 {
+        grid-column: span 7;
+        min-height: 360px;
+    }
+
+    @media (min-width: 1200px) {
+        .collection-card--1 {
+            grid-column: 1 / span 7;
+        }
+
+        .collection-card--2 {
+            grid-column: 8 / span 5;
+        }
+
+        .collection-card--3 {
+            grid-column: 1 / span 5;
+        }
+
+        .collection-card--4 {
+            grid-column: 6 / span 7;
+        }
+    }
+
+    /* Mobile carousel using scroll-snap */
+    @media (max-width: 749px) {
+        .collections-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 12px;
+            padding: 6px 6px 6px 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .collections-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .collection-card {
+            flex: 0 0 80%;
+            min-width: 80%;
+            scroll-snap-align: start;
+            min-height: 360px;
+        }
+    }
+</style>
+
+{% schema %}
+{
+"name": "Display collections",
+"settings": [
+{
+"type": "text",
+"id": "text",
+"label": "Header",
+"default": "Display Collections"
+},
+{
+"type": "select",
+"id": "text_position",
+"label": "Header position",
+"default": "center",
+"options": [
+{ "value": "center", "label": "Center" },
+{ "value": "right", "label": "Right" },
+{ "value": "left", "label": "Left" }
+]
+},
+{
+"type": "textarea",
+"id": "desc",
+"label": "Description",
+"default": "Description"
+}
+],
+"max_blocks": 4,
+"blocks": [
+{
+"type": "cta",
+"name": "CTA Card",
+"settings": [
+{ "type": "select", "id": "bg_type", "label": "Background type", "default": "image", "options": [
+{ "value": "image", "label": "Image" },
+{ "value": "gradient", "label": "Gradient" }
+]},
+{ "type": "image_picker", "id": "image", "label": "Background image" },
+{ "type": "color", "id": "gradient_start", "label": "Gradient start", "default": "#a18cd1" },
+{ "type": "color", "id": "gradient_end", "label": "Gradient end", "default": "#fbc2eb" },
+{ "type": "text", "id": "gradient_direction", "label": "Gradient angle or direction", "default": "135deg" },
+{ "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Featured" },
+{ "type": "color", "id": "eyebrow_color", "label": "Eyebrow Color", "default": "#000000" },
+{ "type": "text", "id": "title", "label": "Title", "default": "Collection title" },
+{ "type": "color", "id": "title_color", "label": "Title Color", "default": "#FFFFFF" },
+{ "type": "textarea", "id": "text", "label": "Text", "default": "Short teaser copy for this card." },
+{ "type": "color", "id": "text_color", "label": "Text Color", "default": "#000000" },
+{ "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+{ "type": "url", "id": "link", "label": "Button link" },
+{ "type": "color", "id": "bg", "label": "Fallback background", "default": "#d8d8d8" }
+]
+}
+],
+"presets": [
+{
+"name": "Display-collections",
+"blocks": [
+{ "type": "cta" },
+{ "type": "cta" },
+{ "type": "cta" },
+{ "type": "cta" }
+]
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,309 @@
+{%- style -%}
+.instagram-feed {
+width: 90%;
+max-width: 1536px;
+margin: 5rem auto;
+position: relative;
+overflow: hidden;
+}
+
+.instagram-header {
+text-align: center;
+margin-bottom: 3rem;
+}
+
+.instagram-title {
+font-size: 2.5rem;
+margin-bottom: 1rem;
+color: {{ section.settings.heading_color }};
+}
+
+.instagram-subtitle {
+font-size: 1.1rem;
+color: {{ section.settings.subtitle_color }};
+max-width: 600px;
+margin: 0 auto 2rem;
+}
+
+.instagram-handle {
+display: inline-block;
+color: #E1306C;
+font-weight: 600;
+text-decoration: none;
+margin-top: 1rem;
+}
+
+.instagram-track {
+display: flex;
+gap: 1.5rem;
+padding: 1rem 0;
+animation: scroll {{ section.settings.speed | times: 10 }}s linear infinite;
+width: max-content;
+}
+
+@keyframes scroll {
+0% {
+transform: translateX(0);
+}
+100% {
+transform: translateX(calc(-280px * {{ section.blocks.size }} / 2));
+}
+}
+
+.instagram-card {
+position: relative;
+width: 280px;
+height: 280px;
+border-radius: 12px;
+overflow: hidden;
+flex-shrink: 0;
+transition: transform 0.3s ease;
+}
+
+.instagram-card:hover {
+transform: translateY(-5px);
+}
+
+.instagram-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+.instagram-overlay {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.3);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.instagram-card:hover .instagram-overlay {
+opacity: 1;
+}
+
+.instagram-icon {
+width: 2.5rem;
+height: 2.5rem;
+fill: white;
+}
+
+.instagram-mask {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(225, 48, 108, 0.8);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+color: white;
+text-align: center;
+padding: 1rem;
+}
+
+.instagram-logo {
+font-size: 2.5rem;
+margin-bottom: 0.5rem;
+}
+
+.instagram-follow {
+font-size: 0.9rem;
+margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+.instagram-track {
+gap: 1rem;
+}
+
+.instagram-card {
+width: 240px;
+height: 240px;
+}
+}
+{%- endstyle -%}
+
+<div id="{{section.id}}" class=" instagram-feed container">
+    <div class="instagram-header">
+        <h2 class="instagram-title">{{ section.settings.heading }}</h2>
+        {% if section.settings.subtitle != blank %}
+        <p class="instagram-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+        <a href="{{ section.settings.instagram_url }}" class="instagram-handle" target="_blank" rel="noopener">
+            {{ section.settings.instagram_handle }}
+        </a>
+    </div>
+
+    <div class="instagram-carousel">
+        <div class="instagram-track">
+            {% for block in section.blocks %}
+            {% assign random_number = "now" | date: "%N" | modulo: section.blocks.size | plus: 1 %}
+            <div class="instagram-card" {{ block.shopify_attributes }}>
+                {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 600 | image_tag:
+                class: 'instagram-image',
+                loading: 'lazy',
+                width: 600,
+                height: 600,
+                alt: block.settings.alt | escape
+                }}
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'instagram-image' }}
+                {% endif %}
+
+                <a href="{{ section.settings.instagram_url }}" class="instagram-overlay" target="_blank" rel="noopener">
+                    <svg class="instagram-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+
+                {% if random_number == forloop.index %}
+                <a href="{{ section.settings.instagram_url }}" class="instagram-mask" target="_blank" rel="noopener">
+                    <svg class="instagram-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                            fill="white" />
+                    </svg>
+                    <span>Follow us on Instagram</span>
+                    <span class="instagram-follow">@{{ section.settings.instagram_handle | remove: '@' }}</span>
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% comment %} Duplicate items for seamless looping {% endcomment %}
+            {% for block in section.blocks %}
+            <div class="instagram-card">
+                {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 600 | image_tag:
+                class: 'instagram-image',
+                loading: 'lazy',
+                width: 600,
+                height: 600,
+                alt: block.settings.alt | escape
+                }}
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'instagram-image' }}
+                {% endif %}
+
+                <a href="{{ section.settings.instagram_url }}" class="instagram-overlay" target="_blank" rel="noopener">
+                    <svg class="instagram-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+"name": "Instagram Feed",
+"max_blocks": 12,
+"settings": [
+{
+"type": "text",
+"id": "heading",
+"label": "Heading",
+"default": "Follow Us on Instagram"
+},
+{
+"type": "color",
+"id": "heading_color",
+"label": "Heading Color",
+"default": "#333333"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Subtitle",
+"default": "Tag us in your photos for a chance to be featured!"
+},
+{
+"type": "color",
+"id": "subtitle_color",
+"label": "Subtitle Color",
+"default": "#666666"
+},
+{
+"type": "text",
+"id": "instagram_handle",
+"label": "Instagram Handle",
+"default": "@yourstore"
+},
+{
+"type": "url",
+"id": "instagram_url",
+"label": "Instagram URL"
+},
+{
+"type": "range",
+"id": "speed",
+"min": 5,
+"max": 20,
+"step": 1,
+"label": "Animation Speed",
+"default": 10,
+"info": "Lower is faster"
+}
+],
+"blocks": [
+{
+"type": "image",
+"name": "Instagram Post",
+"settings": [
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "text",
+"id": "alt",
+"label": "Alt Text",
+"info": "For accessibility and SEO"
+}
+]
+}
+],
+"presets": [
+{
+"name": "Instagram Feed",
+"category": "Social Media",
+"blocks": [
+{
+"type": "image"
+},
+{
+"type": "image"
+},
+{
+"type": "image"
+},
+{
+"type": "image"
+},
+{
+"type": "image"
+},
+{
+"type": "image"
+}
+]
+}
+]
+}
+{% endschema %}

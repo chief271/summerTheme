@@ -1,0 +1,79 @@
+{{ 'display-look.css' | asset_url | stylesheet_tag }}
+
+<div class="display_look page-width">
+    {% for block in section.blocks %}
+    {% assign product = block.settings.product %}
+    <div class="display_container" {{ block.shopify_attributes }}>
+
+        <div class="product_image">
+            {% if product %}
+            <a href="{{ product.url }}" class="product_box">
+                {% if product.featured_image %}
+                <img src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="600"
+                    height="{{ 600 | divided_by: product.featured_image.aspect_ratio }}">
+                {% endif %}
+                <div class="product_info">
+                    <div class="product_title">{{ product.title }}</div>
+                    <div class="product_price">{{ product.price | money }}</div>
+                </div>
+            </a>
+            {% else %}
+            <div class="product_box product_box--placeholder">
+                <div class="product_info">
+                    <div class="product_title">Select a product</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="image_desc">
+            <div class="title">{{ block.settings.title }}</div>
+            <div class="content">{{ block.settings.desc }}</div>
+        </div>
+
+        <div class="navigation-bolts"></div>
+
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{{ 'display-look.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+"name": "Display Look",
+"settings": [],
+"presets": [
+{
+"name": "Display Look",
+"blocks": [
+{ "type": "product" }
+]
+}
+],
+"blocks": [
+{
+"name": "Product",
+"type": "product",
+"settings": [
+{
+"type": "product",
+"id": "product",
+"label": "Add Product"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Look Title"
+},
+{
+"type": "textarea",
+"id": "desc",
+"label": "Look Description"
+}
+]
+}
+]
+}
+{% endschema %}

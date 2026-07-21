@@ -1,0 +1,158 @@
+.display_look {
+    --dl-gap: 16px;
+    --dl-radius: 12px;
+    --dl-accent: #111;
+    --dl-muted: #767676;
+    --dl-bg: #f5f5f5;
+    --dl-max-width: 1200px;
+
+
+    display: flex;
+    gap: var(--dl-gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--dl-gap) 24px;
+
+    scrollbar-width: none;
+
+    max-width: var(--dl-max-width);
+
+    margin: 0 auto;
+
+}
+
+.display_look::-webkit-scrollbar {
+    display: none;
+}
+
+.display_container {
+    scroll-snap-align: start;
+    flex: 0 0 85%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--dl-radius);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 700px) {
+    .display_container {
+        flex: 0 0 280px;
+        /* was 320px — slightly tighter so more breathing room shows between cards */
+    }
+}
+
+/* Product image / box */
+.product_image {
+    position: relative;
+    background: var(--dl-bg);
+    aspect-ratio: 4 / 5;
+}
+
+.product_box {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.product_box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.product_box--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dl-muted);
+    font-size: 13px;
+}
+
+/* Replaces the old separate .product_title / .product_price absolute rules */
+.product_info {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.product_title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+}
+
+.product_price {
+    font-size: 13px;
+    color: var(--dl-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+}
+
+/* Description block */
+.image_desc {
+    padding: 14px 16px;
+}
+
+.image_desc .title {
+    font-size: 16px;
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    margin-bottom: 6px;
+}
+
+.image_desc .content {
+    font-size: 13px;
+    color: var(--dl-muted);
+    line-height: 1.5;
+}
+
+/* Nav dots (bolts) */
+.navigation-bolts {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 0 14px;
+}
+
+.navigation-bolts .bolt {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d4d4d4;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.navigation-bolts .bolt.is-active {
+    background: var(--dl-accent);
+    transform: scale(1.3);
+}

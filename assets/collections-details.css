@@ -1,0 +1,293 @@
+/* ---------- Base ---------- */
+
+.lookbook {
+    --ink: #17140F;
+    --bone: #F1ECE1;
+    --sand: #D8CBB3;
+    --rust: #8B4A32;
+
+
+    background: var(--bone);
+    color: var(--ink);
+    font-family: var(--font-body-family);
+
+    padding: 40px 16px;
+
+}
+
+.lookbook *,
+.lookbook *::before,
+.lookbook *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Nav ---------- */
+
+.lookbook__nav {
+    position: relative;
+    display: flex;
+    gap: 28px;
+    padding: 20px 20px 0;
+    border-bottom: 1px solid var(--sand);
+}
+
+.lookbook__tab {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 0 0 14px;
+    color: var(--ink);
+    opacity: 0.45;
+    transition: opacity 0.25s ease;
+}
+
+.lookbook__tab.is-active {
+    opacity: 1;
+}
+
+.lookbook__tab-index {
+    font-family: var(--font-body-family);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.lookbook__tab-label {
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.lookbook__nav-indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 20px;
+    height: 2px;
+    width: 90px;
+    background: var(--rust);
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---------- Panels ---------- */
+
+.lookbook__panel {
+    display: none;
+}
+
+.lookbook__panel.is-active {
+    display: block;
+    animation: lookbook-fade 0.5s ease both;
+}
+
+@keyframes lookbook-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ---------- Image ---------- */
+
+.lookbook__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+}
+
+.lookbook__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lookbook__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(23, 20, 15, 0.55) 0%,
+            rgba(23, 20, 15, 0) 45%);
+}
+
+.lookbook__caption {
+    position: absolute;
+    top: 24px;
+    left: 20px;
+    right: 20px;
+    color: var(--bone);
+}
+
+.lookbook__eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 26px;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.lookbook__desc {
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    margin: 6px 0 0;
+    max-width: 30ch;
+    opacity: 0.85;
+}
+
+/* ---------- Body / Products ---------- */
+
+.lookbook__body {
+    position: relative;
+    padding: 28px 20px 32px;
+}
+
+.lookbook__ghost-index {
+    position: absolute;
+    top: -6px;
+    right: 12px;
+    font-family: var(--font-body-family);
+    font-style: italic;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.lookbook__collection-title {
+    font-family: var(--font-body-family);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 20px;
+}
+
+.lookbook__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: 20px 14px;
+}
+
+.lookbook__card:nth-child(2n) {
+    margin-top: 28px;
+}
+
+.lookbook__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.lookbook__card img {
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+.lookbook__card>* {
+    margin-top: 0;
+}
+
+.lookbook__card>*:last-child {
+    margin-top: auto;
+}
+
+/* ---------- CTA ---------- */
+
+.lookbook__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.lookbook__cta:hover {
+    color: var(--rust);
+    border-color: var(--rust);
+}
+
+.lookbook__cta-arrow {
+    transition: transform 0.2s ease;
+}
+
+.lookbook__cta:hover .lookbook__cta-arrow {
+    transform: translateX(3px);
+}
+
+/* ---------- Desktop ---------- */
+
+@media (min-width: 750px) {
+
+    .lookbook__panel.is-active {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+    }
+
+    .lookbook__frame {
+        aspect-ratio: auto;
+        height: 100%;
+    }
+
+    .lookbook__caption {
+        top: 40px;
+        left: 40px;
+        right: 40px;
+    }
+
+    .lookbook__eyebrow {
+        font-size: 38px;
+    }
+
+    .lookbook__body {
+        padding: 48px 48px 48px 40px;
+    }
+
+    .lookbook__ghost-index {
+        font-size: 140px;
+        top: -20px;
+        right: 24px;
+    }
+
+    .lookbook__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 20px;
+    }
+
+    .lookbook__card:nth-child(2n) {
+        margin-top: 0;
+    }
+}
+
+/* ---------- Reduced Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .lookbook__panel.is-active,
+    .lookbook__nav-indicator,
+    .lookbook__tab,
+    .lookbook__cta,
+    .lookbook__cta-arrow {
+        animation: none !important;
+        transition: none !important;
+    }
+}
