@@ -57,11 +57,11 @@
             <div class="lookbook__scrim"></div>
 
             <div class="lookbook__caption">
-                <p class="lookbook__eyebrow">
+                <p class="lookbook__eyebrow" style="color: {{ section.settings.accent_color }};">
                     {{ section.settings.title_text }}
                 </p>
-
-                <p class="lookbook__desc">
+            
+                <p class="lookbook__desc" style="color: {{ section.settings.accent_color }};">
                     {{ section.settings.desc_text }}
                 </p>
             </div>
@@ -148,15 +148,15 @@
 
             <div class="lookbook__scrim"></div>
 
-            <div class="lookbook__caption">
-                <p class="lookbook__eyebrow">
-                    {{ section.settings.title_text }}
-                </p>
-
-                <p class="lookbook__desc">
-                    {{ section.settings.desc_text }}
-                </p>
-            </div>
+        <div class="lookbook__caption">
+            <p class="lookbook__eyebrow" style="color: {{ section.settings.accent_color }};">
+                {{ section.settings.title_text }}
+            </p>
+        
+            <p class="lookbook__desc" style="color: {{ section.settings.accent_color }};">
+                {{ section.settings.desc_text }}
+            </p>
+        </div>
 
         </div>
 

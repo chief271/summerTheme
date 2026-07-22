@@ -23,12 +23,23 @@
 
 /* ---------- Nav ---------- */
 
-.lookbook__nav {
-    position: relative;
-    display: flex;
-    gap: 28px;
-    padding: 20px 20px 0;
-    border-bottom: 1px solid var(--sand);
+/* ---------- Base ---------- */
+
+.lookbook {
+    --ink: #17140F;
+    --bone: #F1ECE1;
+    --sand: #D8CBB3;
+    --rust: #8B4A32;
+
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--font-body-family);
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 40px 16px;
 }
 
 .lookbook__tab {
