@@ -1,0 +1,317 @@
+{{ 'section-faq.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+background-color: {{ section.settings.background_color }};
+}
+
+@media screen and (min-width: 750px) {
+.section-{{ section.id }}-padding {
+padding-top: {{ section.settings.padding_top }}px;
+padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+}
+
+/* Custom Variables for this Section */
+#shopify-section-{{ section.id }} {
+--faq-background: {{ section.settings.background_color }};
+--faq-text: {{ section.settings.text_color }};
+--faq-heading: {{ section.settings.heading_color }};
+--faq-accent: {{ section.settings.accent_color }};
+--faq-border: {{ section.settings.border_color }};
+--faq-hover: {{ section.settings.hover_color }};
+}
+{%- endstyle -%}
+
+<div class="faq-section color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
+    data-allow-multiple="{{ section.settings.allow_multiple }}"
+    data-open-first="{{ section.settings.open_first_item }}">
+    <div class="page-width">
+        <div class="faq__header" style="text-align: {{ section.settings.heading_alignment }};">
+            {%- if section.settings.subheading != blank -%}
+            <p class="faq__subheading" style="color: {{ section.settings.subheading_color }};">
+                {{ section.settings.subheading | escape }}
+            </p>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+            <h2 class="faq__heading {{ section.settings.heading_size }}"
+                style="color: {{ section.settings.heading_color }};">
+                {{ section.settings.heading | escape }}
+            </h2>
+            {%- endif -%}
+
+            {%- if section.settings.description != blank -%}
+            <div class="faq__description" style="color: {{ section.settings.text_color }};">
+                {{ section.settings.description }}
+            </div>
+            {%- endif -%}
+        </div>
+
+        <div class="faq__container" style="max-width: {{ section.settings.content_width }}px; margin: 0 auto;">
+            {%- for block in section.blocks -%}
+            {%- if block.type == 'question' -%}
+            {%- liquid
+            # Logic to handle color fallbacks properly
+            assign q_bg = block.settings.question_bg_color
+            if q_bg == 'rgba(0,0,0,0)' or q_bg == blank
+            assign q_bg = section.settings.question_bg_color
+            endif
+
+            assign q_text = block.settings.question_text_color
+            if q_text == 'rgba(0,0,0,0)' or q_text == blank
+            assign q_text = section.settings.question_text_color
+            endif
+
+            assign a_bg = block.settings.answer_bg_color
+            if a_bg == 'rgba(0,0,0,0)' or a_bg == blank
+            assign a_bg = section.settings.answer_background_color
+            endif
+
+            assign a_text = block.settings.answer_text_color
+            if a_text == 'rgba(0,0,0,0)' or a_text == blank
+            assign a_text = section.settings.answer_text_color
+            endif
+
+            assign b_color = block.settings.border_color
+            if b_color == 'rgba(0,0,0,0)' or b_color == blank
+            assign b_color = section.settings.border_color
+            endif
+            -%}
+
+            <div class="faq__item" {{ block.shopify_attributes }} style="margin-bottom: 10px;">
+                <button class="faq__question" aria-expanded="false"
+                    aria-controls="faq-{{ section.id }}-{{ forloop.index }}"
+                    style="
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+                border: 1px solid {{ b_color }};
+                background-color: {{ q_bg }};
+                color: {{ q_text }};
+                padding: 15px 20px;
+                {% if section.settings.rounded_corners %}border-radius: {{ section.settings.border_radius }}px;{% endif %}">
+                    <span class="faq__question-text" style="font-weight: 600; text-align: left;">{{ block.settings.title
+                        | escape }}</span>
+                    <span class="faq__icon">
+                        <svg class="icon icon-plus" width="16" height="16" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 4.16675V15.8334" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4.16663 10H15.8333" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="faq-{{ section.id }}-{{ forloop.index }}" class="faq__answer"
+                    style="
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background-color: {{ a_bg }};
+                color: {{ a_text }};
+                {% if section.settings.rounded_corners %}border-radius: 0 0 {{ section.settings.border_radius }}px {{ section.settings.border_radius }}px;{% endif %}">
+                    <div class="faq__answer-content" style="padding: 20px;">
+                        {{ block.settings.answer }}
+                    </div>
+                </div>
+            </div>
+            {%- endif -%}
+            {%- endfor -%}
+        </div>
+
+        {%- if section.settings.show_contact_link -%}
+        <div class="faq__footer" style="text-align: {{ section.settings.heading_alignment }}; margin-top: 30px;">
+            <p style="color: {{ section.settings.text_color }};">
+                {{ section.settings.contact_text | escape }}
+                <a href="{{ section.settings.contact_link }}" class="faq__contact-link"
+                    style="color: {{ section.settings.accent_color }}; font-weight: bold;">
+                    {{ section.settings.contact_link_text | escape }}
+                </a>
+            </p>
+        </div>
+        {%- endif -%}
+    </div>
+</div>
+
+{% schema %}
+{
+"name": "FAQ Section",
+"tag": "section",
+"class": "section",
+"settings": [
+{
+"type": "header",
+"content": "Content"
+},
+{
+"type": "text",
+"id": "heading",
+"default": "Frequently Asked Questions",
+"label": "Heading"
+},
+{
+"type": "select",
+"id": "heading_size",
+"options": [
+{ "value": "h2", "label": "Small" },
+{ "value": "h1", "label": "Medium" },
+{ "value": "h0", "label": "Large" }
+],
+"default": "h1",
+"label": "Heading size"
+},
+{
+"type": "text",
+"id": "subheading",
+"default": "Need help?",
+"label": "Subheading"
+},
+{
+"type": "richtext",
+"id": "description",
+"default": "<p>Find answers to common questions about our products and services.</p>",
+"label": "Description"
+},
+{
+"type": "select",
+"id": "heading_alignment",
+"label": "Text alignment",
+"options": [
+{ "value": "left", "label": "Left" },
+{ "value": "center", "label": "Center" },
+{ "value": "right", "label": "Right" }
+],
+"default": "center"
+},
+{
+"type": "range",
+"id": "content_width",
+"min": 600,
+"max": 1000,
+"step": 20,
+"unit": "px",
+"label": "Content max width",
+"default": 800
+},
+{
+"type": "header",
+"content": "Functionality"
+},
+{
+"type": "checkbox",
+"id": "allow_multiple",
+"default": false,
+"label": "Allow multiple items open"
+},
+{
+"type": "checkbox",
+"id": "open_first_item",
+"default": false,
+"label": "Open first item by default"
+},
+{
+"type": "header",
+"content": "Design"
+},
+{
+"type": "checkbox",
+"id": "rounded_corners",
+"default": true,
+"label": "Rounded corners"
+},
+{
+"type": "range",
+"id": "border_radius",
+"min": 0,
+"max": 20,
+"step": 1,
+"unit": "px",
+"label": "Border radius",
+"default": 8
+},
+{
+"type": "header",
+"content": "Contact Link"
+},
+{
+"type": "checkbox",
+"id": "show_contact_link",
+"default": true,
+"label": "Show contact link"
+},
+{
+"type": "text",
+"id": "contact_text",
+"default": "Still have questions?",
+"label": "Contact text"
+},
+{
+"type": "text",
+"id": "contact_link_text",
+"default": "Contact us",
+"label": "Link text"
+},
+{
+"type": "url",
+"id": "contact_link",
+"label": "Link URL"
+},
+{
+"type": "header",
+"content": "Colors"
+},
+{ "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+{ "type": "color", "id": "text_color", "label": "Text color", "default": "#333333" },
+{ "type": "color", "id": "heading_color", "label": "Heading color", "default": "#000000" },
+{ "type": "color", "id": "subheading_color", "label": "Subheading color", "default": "#666666" },
+{ "type": "color", "id": "accent_color", "label": "Accent color", "default": "#2563eb" },
+{ "type": "color", "id": "border_color", "label": "Border color", "default": "#e5e7eb" },
+{ "type": "color", "id": "hover_color", "label": "Hover color", "default": "#f3f4f6" },
+{ "type": "color", "id": "question_bg_color", "label": "Question background", "default": "#f9fafb" },
+{ "type": "color", "id": "question_text_color", "label": "Question text", "default": "#111827" },
+{ "type": "color", "id": "answer_background_color", "label": "Answer background", "default": "#ffffff" },
+{ "type": "color", "id": "answer_text_color", "label": "Answer text", "default": "#374151" },
+{
+"type": "header",
+"content": "Section padding"
+},
+{ "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top",
+"default": 48 },
+{ "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom",
+"default": 48 }
+],
+"blocks": [
+{
+"type": "question",
+"name": "Question",
+"settings": [
+{ "type": "text", "id": "title", "default": "Frequently asked question", "label": "Question" },
+{ "type": "richtext", "id": "answer", "default": "<p>Answer to the frequently asked question goes here.</p>", "label":
+"Answer" },
+{ "type": "header", "content": "Custom Colors (Optional)" },
+{ "type": "color", "id": "question_bg_color", "label": "Question background" },
+{ "type": "color", "id": "question_text_color", "label": "Question text" },
+{ "type": "color", "id": "answer_bg_color", "label": "Answer background" },
+{ "type": "color", "id": "answer_text_color", "label": "Answer text" },
+{ "type": "color", "id": "border_color", "label": "Border color" }
+]
+}
+],
+"presets": [
+{
+"name": "FAQ Section",
+"blocks": [
+{ "type": "question" },
+{ "type": "question" }
+]
+}
+]
+}
+{% endschema %}
+
+<script src="{{'faq.js' |  asset_url}} " defer></script>
