@@ -1,0 +1,1519 @@
+{% if section.settings.desktop_image != blank %}
+
+<section class="hero-section" id="lookbook-{{ section.id }}" class="lookbook-hero" style="
+        --desktop-height: {{ section.settings.desktop_height }}px;
+        --mobile-height: {{ section.settings.mobile_height }}px;
+        --accent-color: {{ section.settings.accent_color }};
+    ">
+
+    <!-- IMAGE -->
+    <picture class="lookbook-hero__media">
+
+        {% if section.settings.mobile_image != blank %}
+
+        <source media="(max-width: 950px)" srcset="{{ section.settings.mobile_image | image_url: width: 1600 }}">
+
+        {% endif %}
+
+        <img class="lookbook-hero__image" src="{{ section.settings.desktop_image | image_url: width: 3840 }}"
+            alt="{{ section.settings.desktop_image.alt | escape }}" loading="eager">
+
+    </picture>
+
+
+    <!-- IMAGE OVERLAY -->
+    <div class="lookbook-hero__overlay"></div>
+
+
+    <!-- CONTENT -->
+    <div class="lookbook-hero__content">
+
+        {% if section.settings.eyebrow != blank %}
+
+        <p class="lookbook-hero__eyebrow">
+            {{ section.settings.eyebrow }}
+        </p>
+
+        {% endif %}
+
+
+        {% if section.settings.heading != blank %}
+
+        <h1 class="lookbook-hero__heading">
+            {{ section.settings.heading }}
+        </h1>
+
+        {% endif %}
+
+
+        {% if section.settings.button_label != blank %}
+
+        <a href="{{ section.settings.button_link }}" class="lookbook-hero__button">
+            {{ section.settings.button_label }}
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- HOTSPOTS -->
+    <div class="lookbook-hotspots">
+
+        {% for i in (1..5) %}
+
+        {% liquid
+
+        assign product_key = 'point_' | append: i | append: '_product'
+
+        assign desktop_x_key = 'point_' | append: i | append: '_desktop_x'
+        assign desktop_y_key = 'point_' | append: i | append: '_desktop_y'
+
+        assign mobile_x_key = 'point_' | append: i | append: '_mobile_x'
+        assign mobile_y_key = 'point_' | append: i | append: '_mobile_y'
+
+        assign product = section.settings[product_key]
+
+        assign desktop_x = section.settings[desktop_x_key]
+        assign desktop_y = section.settings[desktop_y_key]
+
+        assign mobile_x = section.settings[mobile_x_key]
+        assign mobile_y = section.settings[mobile_y_key]
+
+        %}
+
+
+        {% if product != blank %}
+
+        <button type="button" class="lookbook-hotspot" data-index="{{ i }}" style="
+                        --desktop-x: {{ desktop_x }}%;
+                        --desktop-y: {{ desktop_y }}%;
+                        --mobile-x: {{ mobile_x }}%;
+                        --mobile-y: {{ mobile_y }}%;
+                    " aria-label="View {{ product.title }}">
+
+            <span class="lookbook-hotspot__pulse"></span>
+
+            <span class="lookbook-hotspot__dot">
+
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                    <path d="M4 0V8M0 4H8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+
+            </span>
+
+        </button>
+
+
+        <!-- PRODUCT CARD -->
+
+        <div class="lookbook-product-card" id="product-card-{{ section.id }}-{{ i }}">
+
+            <button type="button" class="lookbook-product-card__close" aria-label="Close product">
+                ×
+            </button>
+
+
+            {% if product.featured_image != blank %}
+
+            <a href="{{ product.url }}" class="lookbook-product-card__image">
+
+                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}"
+                    loading="lazy">
+
+            </a>
+
+            {% endif %}
+
+
+            <div class="lookbook-product-card__content">
+
+                <h3>
+                    {{ product.title }}
+                </h3>
+
+
+                <p>
+                    {{ product.price | money }}
+                </p>
+
+
+                <a href="{{ product.url }}" class="lookbook-product-card__button">
+                    View product
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+
+    <div class="lookbook-backdrop"></div>
+
+</section>
+
+
+<style>
+    /*
+    ========================================
+    HERO
+    ========================================
+    */
+    .hero-section {
+    position: relative;
+    height: var(--desktop-height);
+}
+
+@media (max-width: 950px) {
+    .hero-section {
+        height: var(--mobile-height);
+    }
+}
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+        {
+
+        position: relative;
+
+        height: var(--desktop-height);
+
+        overflow: hidden;
+
+        isolation: isolate;
+
+        background: #14151a;
+
+    }
+
+
+    /*
+    ========================================
+    IMAGE
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__media {
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 0;
+
+        display: block;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__image {
+
+        display: block;
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        object-position: center;
+
+    }
+
+
+    /*
+    ========================================
+    OVERLAY
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__overlay {
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 1;
+
+        pointer-events: none;
+
+        background:
+
+            linear-gradient(180deg,
+                rgba(20, 21, 26, 0.05) 0%,
+                rgba(20, 21, 26, 0.05) 45%,
+                rgba(20, 21, 26, 0.68) 100%);
+
+    }
+
+
+    /*
+    ========================================
+    CONTENT
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__content {
+
+        position: absolute;
+
+        left: 5vw;
+
+        bottom: 6vw;
+
+        z-index: 5;
+
+        max-width: 560px;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__eyebrow {
+
+        margin: 0 0 14px;
+
+        color: var(--accent-color);
+
+        font-size: 0.72rem;
+
+        font-weight: 600;
+
+        letter-spacing: 0.16em;
+
+        text-transform: uppercase;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__heading {
+
+        margin: 0 0 20px;
+
+        color: #f6f2e9;
+
+        font-family:
+
+            Georgia,
+
+            'Times New Roman',
+
+            serif;
+
+        font-size: clamp(2rem, 4.2vw, 3.4rem);
+
+        font-weight: 500;
+
+        line-height: 1.08;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__button {
+
+        display: inline-flex;
+
+        padding: 12px 24px;
+
+        border: 1px solid rgba(246, 242, 233, 0.72);
+
+        border-radius: 2px;
+
+        color: #f6f2e9;
+
+        font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+
+        letter-spacing: 0.04em;
+
+        text-decoration: none;
+
+        transition: 0.25s ease;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hero__button:hover {
+
+        background: #f6f2e9;
+
+        color: #14151a;
+
+    }
+
+
+    /*
+    ========================================
+    HOTSPOT LAYER
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hotspots {
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 10;
+
+        pointer-events: none;
+
+    }
+
+
+    /*
+    ========================================
+    HOTSPOT
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hotspot {
+
+        position: absolute;
+
+        left: var(--desktop-x);
+
+        top: var(--desktop-y);
+
+        transform: translate(-50%, -50%);
+
+        width: 34px;
+
+        height: 34px;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        cursor: pointer;
+
+        pointer-events: auto;
+
+    }
+
+
+    /*
+    ========================================
+    DOT
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hotspot__dot {
+
+        position: relative;
+
+        z-index: 2;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 24px;
+
+        height: 24px;
+
+        border: 1px solid rgba(255, 255, 255, 0.95);
+
+        border-radius: 50%;
+
+        background: rgba(20, 21, 26, 0.65);
+
+        color: white;
+
+        box-shadow:
+
+            0 0 8px rgba(255, 255, 255, 0.7),
+
+            0 0 18px var(--accent-color),
+
+            0 0 32px rgba(200, 162, 74, 0.45);
+
+        transition: 0.2s ease;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hotspot:hover .lookbook-hotspot__dot {
+
+        transform: scale(1.15);
+
+        background: var(--accent-color);
+
+        border-color: var(--accent-color);
+
+        color: #14151a;
+
+    }
+
+
+    /*
+    ========================================
+    PULSE
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-hotspot__pulse {
+
+        position: absolute;
+
+        left: 50%;
+
+        top: 50%;
+
+        width: 24px;
+
+        height: 24px;
+
+        border: 1px solid var(--accent-color);
+
+        border-radius: 50%;
+
+        transform: translate(-50%, -50%);
+
+        animation:
+
+            lookbook-pulse 2.2s ease-out infinite;
+
+    }
+
+
+    @keyframes lookbook-pulse {
+
+        0% {
+
+            opacity: 0.9;
+
+            transform:
+                translate(-50%, -50%) scale(1);
+
+        }
+
+        100% {
+
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%) scale(2.8);
+
+        }
+
+    }
+
+
+    /*
+    ========================================
+    PRODUCT CARD
+    ========================================
+    */
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card {
+
+        position: absolute;
+
+        z-index: 30;
+
+        width: 220px;
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transform: translateY(8px) scale(0.96);
+
+        background: #fffdf9;
+
+        border-radius: 6px;
+
+        overflow: hidden;
+
+        box-shadow:
+
+            0 18px 50px rgba(0, 0, 0, 0.3);
+
+        transition:
+
+            opacity 0.2s ease,
+
+            transform 0.2s ease,
+
+            visibility 0.2s ease;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card.is-active {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        pointer-events: auto;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__image {
+
+        display: block;
+
+        height: 140px;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__image img {
+
+        display: block;
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__content {
+
+        padding: 14px;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__content h3 {
+
+        margin: 0 0 5px;
+
+        color: #14151a;
+
+        font-size: 0.85rem;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__content p {
+
+        margin: 0 0 12px;
+
+        color: #6b6b6b;
+
+        font-size: 0.8rem;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__button {
+
+        display: block;
+
+        padding: 9px;
+
+        background: #14151a;
+
+        color: white;
+
+        text-align: center;
+
+        font-size: 0.75rem;
+
+        text-decoration: none;
+
+    }
+
+
+    #lookbook- {
+            {
+            section.id
+        }
+    }
+
+    .lookbook-product-card__close {
+
+        position: absolute;
+
+        top: 7px;
+
+        right: 7px;
+
+        z-index: 2;
+
+        width: 22px;
+
+        height: 22px;
+
+        border: 0;
+
+        border-radius: 50%;
+
+        background: rgba(20, 21, 26, 0.65);
+
+        color: white;
+
+        cursor: pointer;
+
+    }
+
+
+    /*
+    ========================================
+    MOBILE
+    ========================================
+    */
+
+    @media (max-width: 950px) {
+
+        #lookbook- {
+                {
+                section.id
+            }
+        }
+
+            {
+
+            height: var(--mobile-height);
+
+        }
+
+
+        #lookbook- {
+                {
+                section.id
+            }
+        }
+
+        .lookbook-hotspot {
+
+            left: var(--mobile-x);
+
+            top: var(--mobile-y);
+
+        }
+
+
+        #lookbook- {
+                {
+                section.id
+            }
+        }
+
+        .lookbook-hero__content {
+
+            left: 6vw;
+
+            right: 6vw;
+
+            bottom: 8vw;
+
+        }
+
+
+        #lookbook- {
+                {
+                section.id
+            }
+        }
+
+        .lookbook-hero__heading {
+
+            font-size: clamp(1.8rem, 8vw, 2.8rem);
+
+        }
+
+    }
+
+
+    /*
+    ========================================
+    REDUCED MOTION
+    ========================================
+    */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        #lookbook- {
+                {
+                section.id
+            }
+        }
+
+        .lookbook-hotspot__pulse {
+
+            animation: none;
+
+            opacity: 0.5;
+
+        }
+
+    }
+</style>
+
+
+<script>
+
+    (function () {
+
+        const section =
+            document.getElementById(
+                'lookbook-{{ section.id }}'
+            );
+
+
+        if (!section) return;
+
+
+        const hotspots =
+            section.querySelectorAll(
+                '.lookbook-hotspot'
+            );
+
+
+        const cards =
+            section.querySelectorAll(
+                '.lookbook-product-card'
+            );
+
+
+        function closeAll() {
+
+            cards.forEach(function (card) {
+
+                card.classList.remove(
+                    'is-active'
+                );
+
+            });
+
+            hotspots.forEach(function (hotspot) {
+
+                hotspot.classList.remove(
+                    'is-active'
+                );
+
+            });
+
+        }
+
+
+        function positionCard(
+            card,
+            hotspot
+        ) {
+
+            const sectionRect =
+                section.getBoundingClientRect();
+
+
+            const hotspotRect =
+                hotspot.getBoundingClientRect();
+
+
+            const cardWidth =
+                220;
+
+
+            const cardHeight =
+                270;
+
+
+            const gap =
+                16;
+
+
+            let left =
+                hotspotRect.left -
+                sectionRect.left +
+                hotspotRect.width +
+                gap;
+
+
+            let top =
+                hotspotRect.top -
+                sectionRect.top -
+                cardHeight / 2;
+
+
+            if (
+                left + cardWidth >
+                sectionRect.width - 10
+            ) {
+
+                left =
+                    hotspotRect.left -
+                    sectionRect.left -
+                    cardWidth -
+                    gap;
+
+            }
+
+
+            top =
+                Math.max(
+                    10,
+
+                    Math.min(
+                        top,
+
+                        sectionRect.height -
+                        cardHeight -
+                        10
+
+                    )
+
+                );
+
+
+            card.style.left =
+                left + 'px';
+
+
+            card.style.top =
+                top + 'px';
+
+        }
+
+
+        hotspots.forEach(function (hotspot) {
+
+            hotspot.addEventListener(
+                'click',
+                function (event) {
+
+                    event.stopPropagation();
+
+
+                    const index =
+                        this.dataset.index;
+
+
+                    const card =
+                        document.getElementById(
+                            'product-card-{{ section.id }}-' +
+                            index
+                        );
+
+
+                    if (!card) return;
+
+
+                    const isActive =
+                        card.classList.contains(
+                            'is-active'
+                        );
+
+
+                    closeAll();
+
+
+                    if (!isActive) {
+
+                        positionCard(
+                            card,
+                            this
+                        );
+
+
+                        card.classList.add(
+                            'is-active'
+                        );
+
+
+                        this.classList.add(
+                            'is-active'
+                        );
+
+                    }
+
+                }
+
+            );
+
+        });
+
+
+        cards.forEach(function (card) {
+
+            const closeButton =
+                card.querySelector(
+                    '.lookbook-product-card__close'
+                );
+
+
+            closeButton.addEventListener(
+                'click',
+                function () {
+
+                    closeAll();
+
+                }
+
+            );
+
+        });
+
+
+        document.addEventListener(
+            'click',
+            function (event) {
+
+                if (
+                    !section.contains(
+                        event.target
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !event.target.closest(
+                        '.lookbook-hotspot'
+                    ) &&
+                    !event.target.closest(
+                        '.lookbook-product-card'
+                    )
+                ) {
+
+                    closeAll();
+
+                }
+
+            }
+
+        );
+
+
+        window.addEventListener(
+            'resize',
+            function () {
+
+                cards.forEach(function (card) {
+
+                    card.classList.remove(
+                        'is-active'
+                    );
+
+                });
+
+            }
+
+        );
+
+    })();
+
+</script>
+
+
+{% endif %}
+
+
+{% schema %}
+
+{
+
+"name": "Lookbook Hero",
+
+"settings": [
+
+{
+"type": "header",
+"content": "Images"
+},
+
+{
+"type": "image_picker",
+"id": "desktop_image",
+"label": "Desktop image"
+},
+
+{
+"type": "image_picker",
+"id": "mobile_image",
+"label": "Mobile image"
+},
+
+{
+"type": "range",
+"id": "desktop_height",
+"label": "Desktop height",
+"min": 500,
+"max": 1000,
+"step": 10,
+"default": 620
+},
+
+{
+"type": "range",
+"id": "mobile_height",
+"label": "Mobile height",
+"min": 400,
+"max": 900,
+"step": 10,
+"default": 600
+},
+
+
+{
+"type": "header",
+"content": "Content"
+},
+
+{
+"type": "text",
+"id": "eyebrow",
+"label": "Eyebrow",
+"default": "Shop the edit"
+},
+
+{
+"type": "text",
+"id": "heading",
+"label": "Heading",
+"default": "Discover Your Taste"
+},
+
+{
+"type": "text",
+"id": "button_label",
+"label": "Button label",
+"default": "See more"
+},
+
+{
+"type": "url",
+"id": "button_link",
+"label": "Button link"
+},
+
+
+{
+"type": "header",
+"content": "Hotspots"
+},
+
+{
+"type": "color",
+"id": "accent_color",
+"label": "Accent color",
+"default": "#C8A24A"
+},
+
+
+{
+"type": "header",
+"content": "Point 1"
+},
+
+{
+"type": "product",
+"id": "point_1_product",
+"label": "Product"
+},
+
+{
+"type": "range",
+"id": "point_1_desktop_x",
+"label": "Desktop X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 25
+},
+
+{
+"type": "range",
+"id": "point_1_desktop_y",
+"label": "Desktop Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 40
+},
+
+{
+"type": "range",
+"id": "point_1_mobile_x",
+"label": "Mobile X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 25
+},
+
+{
+"type": "range",
+"id": "point_1_mobile_y",
+"label": "Mobile Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 40
+},
+
+
+{
+"type": "header",
+"content": "Point 2"
+},
+
+{
+"type": "product",
+"id": "point_2_product",
+"label": "Product"
+},
+
+{
+"type": "range",
+"id": "point_2_desktop_x",
+"label": "Desktop X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 50
+},
+
+{
+"type": "range",
+"id": "point_2_desktop_y",
+"label": "Desktop Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 30
+},
+
+{
+"type": "range",
+"id": "point_2_mobile_x",
+"label": "Mobile X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 50
+},
+
+{
+"type": "range",
+"id": "point_2_mobile_y",
+"label": "Mobile Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 30
+},
+
+
+{
+"type": "header",
+"content": "Point 3"
+},
+
+{
+"type": "product",
+"id": "point_3_product",
+"label": "Product"
+},
+
+{
+"type": "range",
+"id": "point_3_desktop_x",
+"label": "Desktop X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 70
+},
+
+{
+"type": "range",
+"id": "point_3_desktop_y",
+"label": "Desktop Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 55
+},
+
+{
+"type": "range",
+"id": "point_3_mobile_x",
+"label": "Mobile X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 70
+},
+
+{
+"type": "range",
+"id": "point_3_mobile_y",
+"label": "Mobile Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 55
+},
+
+
+{
+"type": "header",
+"content": "Point 4"
+},
+
+{
+"type": "product",
+"id": "point_4_product",
+"label": "Product"
+},
+
+{
+"type": "range",
+"id": "point_4_desktop_x",
+"label": "Desktop X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 35
+},
+
+{
+"type": "range",
+"id": "point_4_desktop_y",
+"label": "Desktop Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 70
+},
+
+{
+"type": "range",
+"id": "point_4_mobile_x",
+"label": "Mobile X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 35
+},
+
+{
+"type": "range",
+"id": "point_4_mobile_y",
+"label": "Mobile Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 70
+},
+
+
+{
+"type": "header",
+"content": "Point 5"
+},
+
+{
+"type": "product",
+"id": "point_5_product",
+"label": "Product"
+},
+
+{
+"type": "range",
+"id": "point_5_desktop_x",
+"label": "Desktop X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 80
+},
+
+{
+"type": "range",
+"id": "point_5_desktop_y",
+"label": "Desktop Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 20
+},
+
+{
+"type": "range",
+"id": "point_5_mobile_x",
+"label": "Mobile X",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 80
+},
+
+{
+"type": "range",
+"id": "point_5_mobile_y",
+"label": "Mobile Y",
+"min": 0,
+"max": 100,
+"step": 1,
+"default": 20
+}
+
+],
+
+
+"presets": [
+
+{
+"name": "Lookbook Hero"
+}
+
+]
+
+}
+
+{% endschema %}
