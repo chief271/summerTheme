@@ -1,0 +1,248 @@
+{% comment %}
+This section is used in the collection template to render collection page
+listing all products within a collection.
+
+https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+
+<div class="collection page-width">
+    <div class="collection__header">
+    
+        <div class="collection__display">
+            <span class=" grid-4 display-active">
+                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M3.5 10H6.5V7H3.5V10Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M3.5 17H6.5V14H3.5V17Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M10.5 10H13.5V7H10.5V10Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M10.5 17H13.5V14H10.5V17Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M17.5 10H20.5V7H17.5V10Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M17.5 17H20.5V14H17.5V17Z" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </span>
+    
+            <span class="2-grid">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M14 5.6C14 5.03995 14 4.75992 14.109 4.54601C14.2049 4.35785 14.3578 4.20487 14.546 4.10899C14.7599 4 15.0399 4 15.6 4H18.4C18.9601 4 19.2401 4 19.454 4.10899C19.6422 4.20487 19.7951 4.35785 19.891 4.54601C20 4.75992 20 5.03995 20 5.6V8.4C20 8.96005 20 9.24008 19.891 9.45399C19.7951 9.64215 19.6422 9.79513 19.454 9.89101C19.2401 10 18.9601 10 18.4 10H15.6C15.0399 10 14.7599 10 14.546 9.89101C14.3578 9.79513 14.2049 9.64215 14.109 9.45399C14 9.24008 14 8.96005 14 8.4V5.6Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M4 5.6C4 5.03995 4 4.75992 4.10899 4.54601C4.20487 4.35785 4.35785 4.20487 4.54601 4.10899C4.75992 4 5.03995 4 5.6 4H8.4C8.96005 4 9.24008 4 9.45399 4.10899C9.64215 4.20487 9.79513 4.35785 9.89101 4.54601C10 4.75992 10 5.03995 10 5.6V8.4C10 8.96005 10 9.24008 9.89101 9.45399C9.79513 9.64215 9.64215 9.79513 9.45399 9.89101C9.24008 10 8.96005 10 8.4 10H5.6C5.03995 10 4.75992 10 4.54601 9.89101C4.35785 9.79513 4.20487 9.64215 4.10899 9.45399C4 9.24008 4 8.96005 4 8.4V5.6Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M4 15.6C4 15.0399 4 14.7599 4.10899 14.546C4.20487 14.3578 4.35785 14.2049 4.54601 14.109C4.75992 14 5.03995 14 5.6 14H8.4C8.96005 14 9.24008 14 9.45399 14.109C9.64215 14.2049 9.79513 14.3578 9.89101 14.546C10 14.7599 10 15.0399 10 15.6V18.4C10 18.9601 10 19.2401 9.89101 19.454C9.79513 19.6422 9.64215 19.7951 9.45399 19.891C9.24008 20 8.96005 20 8.4 20H5.6C5.03995 20 4.75992 20 4.54601 19.891C4.35785 19.7951 4.20487 19.6422 4.10899 19.454C4 19.2401 4 18.9601 4 18.4V15.6Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M14 15.6C14 15.0399 14 14.7599 14.109 14.546C14.2049 14.3578 14.3578 14.2049 14.546 14.109C14.7599 14 15.0399 14 15.6 14H18.4C18.9601 14 19.2401 14 19.454 14.109C19.6422 14.2049 19.7951 14.3578 19.891 14.546C20 14.7599 20 15.0399 20 15.6V18.4C20 18.9601 20 19.2401 19.891 19.454C19.7951 19.6422 19.6422 19.7951 19.454 19.891C19.2401 20 18.9601 20 18.4 20H15.6C15.0399 20 14.7599 20 14.546 19.891C14.3578 19.7951 14.2049 19.6422 14.109 19.454C14 19.2401 14 18.9601 14 18.4V15.6Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </span>
+    
+            
+        </div>
+    
+        <h1>{{ collection.all_products_count }} PRODUCTS</h1>
+    
+        <div class="collection__actions">
+            <button class="sort-button">
+                SORT BY
+                <span>⌄</span>
+            </button>
+    
+            <button id="filters-open">
+                FILTER
+            </button>
+        </div>
+    
+    </div>
+    <div class="collection-inner">
+        <collection-filters class="collection-filters" data-section-id="{{ section.id }}">
+            <div class="collection-filters__heading">
+                <h2>Filters</h2>
+                <svg id="filter-close-btn" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none">
+                    <g id="Menu / Close_MD">
+                        <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="#000000" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                </svg>
+            </div>
+
+            <div class="collection-filters__active-filters">
+                {%- for filter in collection.filters -%}
+                {%- for value in filter.active_values -%}
+                <div class="collection-filters__active-filter-swatch">
+                    <input data-remove-url="{{ value.url_to_remove }}" type="hidden" name="{{ filter.label | handle }}"
+                        value="{{ value.value | handle }}">
+                    <label for="{{ filter.label | handle }}-{{ value.value | handle }}"
+                        class="collection-filters__active-filter-swatch-label">{{ value.label }} X</label>
+                </div>
+                {%- endfor -%}
+                {%- endfor -%}
+            </div>
+
+            <div class="collection-filters__content">
+                {% for filter in collection.filters %}
+                <div class="collection-filter">
+                    <accordion-toggle class="accordion">
+                        <div class="accordion__header">
+                            <span class="accordion__header-label">{{ filter.label }}</span>
+                            <span class="accordion__toggle-icon">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.5 6.5L8 11L3.5 6.5" stroke="black" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="accordion__content">
+                            <div class="collection-filter__options">
+                                {% if filter.type == 'list' or filter.type == 'boolean' %}
+                                <div class="collection-filter__options-list">
+                                    {% for value in filter.values %}
+                                    {%- if filter.label == 'Color' -%}
+                                    <div
+                                        class="collection-filter__option collection-filter__swatch collection-filter__swatch-color {% if value.count == 0 %}is-disabled{% endif %}">
+                                        <input type="checkbox" {% if value.active %} checked {% endif %}
+                                            id="{{ filter.label | handle }}-{{ value.value | handle }}"
+                                            name="{{ filter.label | handle }}" value="{{ value.value | handle }}"
+                                            data-add-url="{{ value.url_to_add }}"
+                                            data-remove-url="{{ value.url_to_remove }}">
+                                        <label for="{{ filter.label | handle }}-{{ value.value | handle }}" {% if
+                                            value.swatch.color %} style="background-color: {{ value.swatch.color }}" {%
+                                            elsif value.swatch.image %}
+                                            style="background-image: url({{ value.swatch.image | image_url: width: 100 }})"
+                                            {% else %} style="background-color: {{ value.label }}" {% endif %}></label>
+                                    </div>
+                                    {%- else -%}
+                                    <div
+                                        class="collection-filter__option collection-filter__swatch {% if value.count == 0 %}is-disabled{% endif %}">
+                                        <input type="checkbox" {% if value.active %} checked {% endif %}
+                                            id="{{ filter.label | handle }}-{{ value.value | handle }}"
+                                            name="{{ filter.label | handle }}" value="{{ value.value | handle }}"
+                                            data-add-url="{{ value.url_to_add }}"
+                                            data-remove-url="{{ value.url_to_remove }}">
+                                        <label for="{{ filter.label | handle }}-{{ value.value | handle }}">
+                                            {% if filter.type == 'boolean' %}
+                                            {{ value.label }}
+                                            {% else %}
+                                            {{ value.value }}
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                    {%- endif -%}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="collection-filter__options-price-range">
+                                    {% if filter.min_value.value %}
+                                    {%- assign min_value = filter.min_value.value | divided_by: 100.0 -%}
+                                    {% else %}
+                                    {%- assign min_value = 0.0 -%}
+                                    {% endif %}
+
+                                    {% if filter.max_value.value %}
+                                    {%- assign max_value = filter.max_value.value | divided_by: 100.0 -%}
+                                    {% else %}
+                                    {%- assign max_value = filter.range_max | divided_by: 100.0 -%}
+                                    {% endif %}
+
+                                    <div class="collection-filter__option">
+                                        <div class="collection-filter__price-range">
+                                            <input data-min-value type="range" id="{{ filter.min_value.param_name }}"
+                                                name="{{ filter.min_value.param_name }}" min="0"
+                                                max="{{ filter.range_max | divided_by: 100 | round | plus: 1 }}"
+                                                value="{{ min_value }}" data-param="{{ filter.min_value.param_name }}"
+                                                class="collection-filter__price-range-input-min">
+                                            <input data-max-value type="range" id="{{ filter.max_value.param_name }}"
+                                                name="{{ filter.max_value.param_name }}" min="0"
+                                                max="{{ filter.range_max | divided_by: 100 | round | plus: 1 }}"
+                                                value="{{ max_value }}" data-param="{{ filter.max_value.param_name }}"
+                                                class="collection-filter__price-range-input-max">
+                                            <div class="collection-filter__price-range-track"></div>
+                                            <div class="collection-filter__price-range-fill" data-range-fill></div>
+                                        </div>
+                                        <div class="collection-filter__price-range-values">
+                                            <span class="collection-filter__option-value" data-min-value-display>
+                                                {{- min_value | times: 100 | money | split: '.' | first -}}
+                                            </span>
+                                            <span class="collection-filter__option-value" data-max-value-display>
+                                                {{- max_value | times: 100 | money | split: '.' | first -}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </accordion-toggle>
+                </div>
+                {% endfor %}
+            </div>
+        </collection-filters>
+
+        <div class="collection-grid">
+            <div class="collection-products" style="--grid-gap: {{ section.settings.grid_gap }}px">
+                {% for product in collection.products %}
+                <div class="collection-product">
+                    {% if product.featured_image %}
+                    {{ product.featured_image | image_url: width: 400 | image_tag: class: 'collection-product__image' }}
+                    {% endif %}
+                    <div class="collection-product__content">
+                        <a href="{{ product.url }}" class="collection-product__title">{{ product.title | escape }}</a>
+                        <p>{{ product.price | money }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const filterOpen = document.getElementById("filters-open");
+    const collectionFilter = document.querySelector(".collection-filters")
+    const filterClose = document.getElementById('filter-close-btn')
+    filterOpen.addEventListener("click", ()=> {
+        collectionFilter.classList.add("open")
+
+    });
+    filterClose.addEventListener('click', () => {
+        collectionFilter.classList.remove("open")
+    })
+</script>
+
+{% schema %}
+{
+"name": "Collection",
+"settings": [
+{
+"type": "range",
+"id": "grid_gap",
+"label": "Grid Gap",
+"min": 0,
+"max": 50,
+"step": 5,
+"unit": "px",
+"default": 10
+}
+],
+"presets": [{
+    "name": "collection"
+}]
+}
+{% endschema %}
