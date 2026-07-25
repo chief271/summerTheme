@@ -24,8 +24,6 @@ class CollectionFilters extends HTMLElement {
 
         this.minRange.addEventListener("input", this.handleRangeInput);
         this.maxRange.addEventListener("input", this.handleRangeInput);
-        this.rangeFill = this.querySelector("[data-range-fill]");
-        this.updateRangeFill();
     }
 
     disconnectedCallback() {
@@ -119,8 +117,6 @@ class CollectionFilters extends HTMLElement {
                 );
             }
         }
-
-        this.updateRangeFill();
     }
 
     formatValue(value) {
@@ -132,17 +128,6 @@ class CollectionFilters extends HTMLElement {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         }).format(dollars);
-    }
-
-    updateRangeFill() {
-        if (!this.rangeFill) return;
-        const max = parseFloat(this.minRange.max);
-        const minVal = parseFloat(this.minRange.value);
-        const maxVal = parseFloat(this.maxRange.value);
-        const minPct = (minVal / max) * 100;
-        const maxPct = (maxVal / max) * 100;
-        this.rangeFill.style.left = `${minPct}%`;
-        this.rangeFill.style.right = `${100 - maxPct}%`;
     }
 }
 
