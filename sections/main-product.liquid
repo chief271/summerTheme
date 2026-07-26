@@ -16,6 +16,12 @@
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
+  {% comment %} Add Settings  {% endcomment %}
+  {% if section.settings.enable_sticky_add_to_cart %}
+  {{ 'sticky-add-to-cart.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'sticky-add-to-cart.js' | asset_url }}" defer="defer"></script>
+  {% endif %}
+
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
     {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
@@ -26,6 +32,8 @@
   {%- endif -%}
 
   {%- style -%}
+
+
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -752,6 +760,40 @@
     </div>
   </product-component>
 </product-info>
+{% if section.settings.enable_sticky_add_to_cart %}
+  
+    <div class="sticky-add-to-cart" data-sticky-add-to-cart>
+      <div class="sticky-add-to-cart__product">
+    
+        {% if product.featured_image %}
+        {{
+        product.featured_image
+        | image_url: width: 100
+        | image_tag
+        }}
+        {% endif %}
+    
+        <div>
+          <p class="sticky-add-to-cart__title">
+            {{ product.title }}
+          </p>
+    
+          <p class="sticky-add-to-cart__price">
+            {{ product.selected_or_first_available_variant.price | money }}
+          </p>
+        </div>
+    
+      </div>
+    
+      <button type="button" class="sticky-add-to-cart__button" data-sticky-add>
+        Add to cart
+      </button>
+    </div>
+
+{% endif %}
+
+
+
 
 {% schema %}
 {
@@ -2147,6 +2189,12 @@
     }
   ],
   "settings": [
+    {
+    "type": "checkbox",
+    "id": "enable_sticky_add_to_cart",
+    "label": "Enable sticky add to cart",
+    "default": true
+    },
     {
       "type": "checkbox",
       "id": "enable_sticky_info",

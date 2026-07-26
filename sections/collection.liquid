@@ -7,9 +7,16 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 
 {{ 'collection.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+{% if section.settings.enable_quick_add %}
+    {{ 'add-quick.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'add-quick.js' | asset_url }}" defer></script>
+{% endif %}
+
+
+
 
 <div class="collection page-width">
-    <h1>{{ collection.title }}</h1>
+    
 
     <div class="collection-inner">
         <collection-filters class="collection-filters" data-section-id="{{ section.id }}">
@@ -143,48 +150,69 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
                             <span class="collection-product__price">{{ product.price | money }}</span>
                 
                             <div class="collection-product__actions">
-                                <button type="button" class="collection-product__wishlist" aria-label="Add to wishlist"
-                                    aria-pressed="false" data-wishlist-toggle>
+                                {% if section.settings.enable_quick_add %}
+                                <button type="button" class="collection-product__cart" data-quick-add data-product-handle="{{ product.handle }}">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M12 21s-7.5-4.7-10-9.1C.4 8.4 2 4.5 5.6 4c2-.3 3.9.6 5 2.2 1.1-1.6 3-2.5 5-2.2 3.6.5 5.2 4.4 3.6 7.9C19.5 16.3 12 21 12 21Z"
-                                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                                            fill="none" />
+                                        <path d="M6 8h12l-1 12H7L6 8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                                        <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                                     </svg>
                                 </button>
-                
-                                <button type="button" class="collection-product__cart" aria-label="Add to cart">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6 8h12l-1 12H7L6 8Z" stroke="currentColor" stroke-width="1.8"
-                                            stroke-linejoin="round" />
-                                        <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.8"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                </button>
+                                {% endif %}
+                                
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                {% if section.settings.enable_quick_add %}
+                    <div class="quick-add-modal" data-quick-add-modal>
+                    
+                        <div class="quick-add-modal__overlay" data-quick-add-close></div>
+                    
+                        <div class="quick-add-modal__content">
+                    
+                            <button type="button" class="quick-add-modal__close" data-quick-add-close>
+                                ×
+                            </button>
+                    
+                            <div class="quick-add-modal__product">
+                    
+                                <img src="" alt="" data-quick-add-image>
+                    
+                                <div>
+                                    <h2 data-quick-add-title></h2>
+                                    <p data-quick-add-price></p>
+                                </div>
+                    
+                            </div>
+                    
+                            <div class="quick-add-modal__options" data-quick-add-options></div>
+                    
+                            <button type="button" class="quick-add-modal__submit" data-quick-add-submit>
+                                Add to cart
+                            </button>
+                    
+                        </div>
+                    
+                    </div>
+                {% endif %}
 
             </div>
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("click", (event) => {
-            const button = event.target.closest("[data-wishlist-toggle]");
-            if (!button) return;
 
-            const isPressed = button.getAttribute("aria-pressed") === "true";
-            button.setAttribute("aria-pressed", String(!isPressed));
-        });
-</script>
 
 {% schema %}
 {
 "name": "Collection",
 "settings": [
+    {
+    "type": "checkbox",
+    "id": "enable_quick_add",
+    "label": "Enable quick add",
+    "default": true
+    },
 {
 "type": "range",
 "id": "grid_gap",
@@ -195,6 +223,11 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 "unit": "px",
 "default": 10
 }
+],
+"presets": [
+    {
+        "name": "Collection"
+    }
 ]
 }
 {% endschema %}
