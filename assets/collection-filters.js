@@ -117,6 +117,8 @@ class CollectionFilters extends HTMLElement {
                 );
             }
         }
+
+
     }
 
     formatValue(value) {
@@ -129,6 +131,8 @@ class CollectionFilters extends HTMLElement {
             maximumFractionDigits: 0,
         }).format(dollars);
     }
+
+
 }
 
 customElements.define("collection-filters", CollectionFilters);
@@ -168,3 +172,37 @@ class AccordionToggle extends HTMLElement {
 }
 
 customElements.define("accordion-toggle", AccordionToggle);
+
+//Close & Open Collection Filter
+
+document.addEventListener("click", (event) => {
+
+    const openBtn = event.target.closest("#filter-btn");
+
+    if (openBtn) {
+
+        const collectionFilter =
+            document.querySelector(".collection-filters");
+
+        if (!collectionFilter) return;
+
+        collectionFilter.classList.add("open");
+
+    }
+
+
+    const closeBtn =
+        event.target.closest("#close-filter-btn");
+
+    if (closeBtn) {
+
+        const collectionFilter =
+            document.querySelector(".collection-filters");
+
+        if (!collectionFilter) return;
+
+        collectionFilter.classList.remove("open");
+
+    }
+
+});

@@ -5,8 +5,17 @@ listing all products within a collection.
 https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-{{ 'collection.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+
+{% if section.settings.enable_quick_view %}
+    {{ 'collection.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+{% endif %}
+
+
+
+{{ 'quick-view.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'quick-view.js' | asset_url }}" defer="defer"></script>
 {% if section.settings.enable_quick_add %}
     {{ 'add-quick.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'add-quick.js' | asset_url }}" defer></script>
@@ -17,11 +26,23 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 
 <div class="collection page-width">
     
-
+    <div class="collection-header">
+        <h2 id="filter-btn">Filters</h2>
+    </div>
     <div class="collection-inner">
         <collection-filters class="collection-filters" data-section-id="{{ section.id }}">
             <div class="collection-filters__heading">
                 <h2>Filters</h2>
+                <svg id="close-filter-btn" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M3 21.32L21 3.32001" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        <path d="M3 3.32001L21 21.32" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </g>
+                </svg>
             </div>
 
             <div class="collection-filters__active-filters">
@@ -150,6 +171,22 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
                             <span class="collection-product__price">{{ product.price | money }}</span>
                 
                             <div class="collection-product__actions">
+
+                                <button type="button" class="collection-product__quick-view" data-quick-view data-product-handle="{{ product.handle }}"
+                                    aria-label="Quick view {{ product.title | escape }}">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M9 4.45962C9.91153 4.16968 10.9104 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C3.75612 8.07914 4.32973 7.43025 5 6.82137"
+                                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                                            <path
+                                                d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+                                                stroke="#1C274C" stroke-width="1.5"></path>
+                                        </g>
+                                    </svg>
+                                </button>
                                 {% if section.settings.enable_quick_add %}
                                 <button type="button" class="collection-product__cart" data-quick-add data-product-handle="{{ product.handle }}">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,6 +201,53 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
                     </div>
                 </div>
                 {% endfor %}
+                {% comment %} quick View  {% endcomment %}
+                {% if section.settings.enable_quick_view %}
+                <div class="quick-view-modal" data-quick-view-modal>
+                
+                    <div class="quick-view-modal__overlay" data-quick-view-close></div>
+                
+                    <div class="quick-view-modal__content">
+                
+                        <button type="button" class="quick-view-modal__close" data-quick-view-close>
+                            ×
+                        </button>
+                
+                        <div class="quick-view-modal__product">
+                
+                            <div class="quick-view-modal__media">
+                
+                                <img src="" alt="" data-quick-view-image>
+                
+                            </div>
+                
+                            <div class="quick-view-modal__details">
+                
+                                <h2 data-quick-view-title></h2>
+                
+                                <p class="quick-view-modal__price" data-quick-view-price></p>
+                
+                                <div class="quick-view-modal__description" data-quick-view-description></div>
+                
+                                <div class="quick-view-modal__options" data-quick-view-options></div>
+                
+                
+                
+                
+                
+                                <a href="#" class="quick-view-modal__full-product" data-quick-view-link>
+                                    View full product
+                                </a>
+                
+                            </div>
+                
+                        </div>
+                
+                    </div>
+                
+                </div>
+                {% endif %}
+                
                 {% if section.settings.enable_quick_add %}
                     <div class="quick-add-modal" data-quick-add-modal>
                     
@@ -211,6 +295,12 @@ https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
     "type": "checkbox",
     "id": "enable_quick_add",
     "label": "Enable quick add",
+    "default": true
+    },
+    {
+    "type": "checkbox",
+    "id": "enable_quick_view",
+    "label": "Enable quick view",
     "default": true
     },
 {
