@@ -1,0 +1,173 @@
+{{ 'before-after.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="before-after color-{{ section.settings.color_scheme }}"
+  style="--before-after-height: {{ section.settings.image_height }}px; --before-after-padding-top: {{ section.settings.padding_top }}px; --before-after-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="before-after__wrapper">
+
+      <div class="before-after__header">
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div>{{ section.settings.text }}</div>
+        {% endif %}
+      </div>
+
+      <div
+        class="before-after__container"
+        style="--position: {{ section.settings.default_position }}%;"
+        data-before-after
+      >
+        <img
+          src="{{ section.settings.before | image_url: width: 2000 }}"
+          alt=""
+          class="before-after__before">
+
+        <img
+          src="{{ section.settings.after | image_url: width: 2000 }}"
+          alt=""
+          class="before-after__after"
+          data-before-after-image>
+
+        {% if section.settings.before_label != blank %}
+          <span class="before-after__label before-after__label--before">{{ section.settings.before_label }}</span>
+        {% endif %}
+
+        {% if section.settings.after_label != blank %}
+          <span class="before-after__label before-after__label--after">{{ section.settings.after_label }}</span>
+        {% endif %}
+
+        <div class="before-after__handle" data-before-after-handle></div>
+
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="{{ section.settings.default_position }}"
+          class="before-after__slider"
+          data-before-after-slider
+          aria-label="Comparison slider">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-before-after]').forEach(function (container) {
+      var slider = container.querySelector('[data-before-after-slider]');
+      if (!slider) return;
+
+      var update = function () {
+        container.style.setProperty('--position', slider.value + '%');
+      };
+
+      slider.addEventListener('input', update);
+      update();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Before / After",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "See the Difference"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Drag the slider to compare the images.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "before",
+      "label": "Before image"
+    },
+    {
+      "type": "image_picker",
+      "id": "after",
+      "label": "After image"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before label",
+      "default": "Before"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After label",
+      "default": "After"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 550
+    },
+    {
+      "type": "range",
+      "id": "default_position",
+      "label": "Default slider position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before / After "
+    }
+  ]
+}
+{% endschema %}

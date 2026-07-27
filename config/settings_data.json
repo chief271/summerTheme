@@ -5,15 +5,15 @@
       "logo_width": 90,
       "color_schemes": {
         "scheme-1": {
-          "settings": {
-            "background": "#FFFFFF",
-            "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#121212",
-            "shadow": "#121212"
-          }
+           "settings": {
+    "background": "#F8F5F1",
+    "background_gradient": "",
+    "text": "#3A2E25",
+    "button": "#6F4E37",
+    "button_label": "#FFFFFF",
+    "secondary_button_label": "#6F4E37",
+    "shadow": "#2A211B"
+  }
         },
         "scheme-2": {
           "settings": {

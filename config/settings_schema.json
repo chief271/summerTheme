@@ -110,8 +110,8 @@
       },
       {
         "type": "font_picker",
-        "id": "type_header_font",
-        "default": "assistant_n4",
+        "id": "type_header_font", 
+        "default": "manrope_n7",
         "label": "t:settings_schema.typography.settings.type_header_font.label"
       },
       {
@@ -122,7 +122,7 @@
         "step": 5,
         "unit": "%",
         "label": "t:settings_schema.typography.settings.heading_scale.label",
-        "default": 100
+        "default": 115
       },
       {
         "type": "header",
@@ -131,7 +131,7 @@
       {
         "type": "font_picker",
         "id": "type_body_font",
-        "default": "assistant_n4",
+        "default": "inter_n4",
         "label": "t:settings_schema.typography.settings.type_body_font.label"
       },
       {
@@ -142,7 +142,7 @@
         "step": 5,
         "unit": "%",
         "label": "t:settings_schema.typography.settings.body_scale.label",
-        "default": 100
+        "default": 105
       }
     ]
   },
@@ -167,7 +167,7 @@
         "step": 4,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.spacing_sections.label",
-        "default": 0
+        "default": 24
       },
       {
         "type": "header",
@@ -183,7 +183,7 @@
         "min": 4,
         "max": 40,
         "step": 4,
-        "default": 8,
+        "default": 24,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.spacing_grid_horizontal.label"
       },
@@ -193,7 +193,7 @@
         "min": 4,
         "max": 40,
         "step": 4,
-        "default": 8,
+        "default": 24,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.spacing_grid_vertical.label"
       }
@@ -426,7 +426,7 @@
         "step": 5,
         "unit": "%",
         "label": "t:settings_schema.global.settings.opacity.label",
-        "default": 55
+        "default": 30
       },
       {
         "type": "range",
@@ -436,7 +436,7 @@
         "step": 2,
         "unit": "px",
         "label": "t:settings_schema.global.settings.corner_radius.label",
-        "default": 0
+        "default": 12
       },
       {
         "type": "header",
@@ -447,10 +447,10 @@
         "id": "inputs_shadow_opacity",
         "min": 0,
         "max": 100,
-        "step": 5,
+        "step": 1,
         "unit": "%",
         "label": "t:settings_schema.global.settings.opacity.label",
-        "default": 0
+        "default": 6
       },
       {
         "type": "range",
@@ -470,17 +470,17 @@
         "step": 2,
         "unit": "px",
         "label": "t:settings_schema.global.settings.vertical_offset.label",
-        "default": 0
+        "default": 6
       },
       {
         "type": "range",
         "id": "inputs_shadow_blur",
         "min": 0,
         "max": 20,
-        "step": 5,
+        "step": 1,
         "unit": "px",
         "label": "t:settings_schema.global.settings.blur.label",
-        "default": 0
+        "default": 16
       }
     ]
   },
