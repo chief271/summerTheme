@@ -16,12 +16,13 @@
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
-  {% comment %} Add Settings  {% endcomment %}
+  {% comment %} Sticky Add to cart  {% endcomment %}
   {% if section.settings.enable_sticky_add_to_cart %}
   {{ 'sticky-add-to-cart.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'sticky-add-to-cart.js' | asset_url }}" defer="defer"></script>
   {% endif %}
-
+  {% comment %} ------------------------------ {% endcomment %}
+    
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
     {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
@@ -32,6 +33,35 @@
   {%- endif -%}
 
   {%- style -%}
+  .gallery-dots {
+    margin-top:8px;
+        display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .gallery-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+
+    background:#c7c7c7;
+
+    transition:.3s ease;
+}
+
+.gallery-dot:hover{
+    transform:scale(1.25);
+}
+
+.gallery-dot.is-active{
+    background:#6F4E37;
+    transform:scale(1.2);
+}
 
 
     .section-{{ section.id }}-padding {
@@ -633,52 +663,15 @@
                               {%- endfor -%}
                             </div>
                             {%- if number_of_slides > 1 -%}
-                              <div class="slider-buttons">
-                                <button
-                                  type="button"
-                                  class="slider-button slider-button--prev"
-                                  name="previous"
-                                  aria-label="{{ 'general.slider.previous_slide' | t }}"
-                                >
-                                  <span class="svg-wrapper">
-                                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                                  </span>
-                                </button>
-                                <div class="slider-counter slider-counter--{{ block.settings.pagination_style }}{% if block.settings.pagination_style == 'counter' or block.settings.pagination_style == 'numbers' %} caption{% endif %}">
-                                  {%- if block.settings.pagination_style == 'counter' -%}
-                                    <span class="slider-counter--current">1</span>
-                                    <span aria-hidden="true"> / </span>
-                                    <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-                                    <span class="slider-counter--total">{{ number_of_slides }}</span>
-                                  {%- else -%}
-                                    <div class="slideshow__control-wrapper">
-                                      {%- for i in (1..number_of_slides) -%}
-                                        <button
-                                          class="slider-counter__link slider-counter__link--{{ block.settings.pagination_style }} link"
-                                          aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
-                                          aria-controls="Slider-{{ block.id }}"
-                                        >
-                                          {%- if block.settings.pagination_style == 'numbers' -%}
-                                            {{ forloop.index -}}
-                                          {%- else -%}
-                                            <span class="dot"></span>
-                                          {%- endif -%}
-                                        </button>
-                                      {%- endfor -%}
-                                    </div>
-                                  {%- endif -%}
-                                </div>
-                                <button
-                                  type="button"
-                                  class="slider-button slider-button--next"
-                                  name="next"
-                                  aria-label="{{ 'general.slider.next_slide' | t }}"
-                                >
-                                  <span class="svg-wrapper">
-                                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                                  </span>
-                                </button>
-                              </div>
+                              <div class="gallery-dots">
+  {% for media in product.media %}
+    <button
+      class="gallery-dot{% if forloop.first %} is-active{% endif %}"
+      data-target="{{ section.id }}-{{ media.id }}"
+      aria-label="Go to image {{ forloop.index }}"
+    ></button>
+  {% endfor %}
+</div>
                             {%- endif -%}
                           </slideshow-component>
                           {%- if block.settings.make_collapsible_row -%}
