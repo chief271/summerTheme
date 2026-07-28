@@ -1,75 +1,258 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero_section_NiJXKp": {
+      "type": "hero-section",
+      "name": "Lookbook Hero",
+      "settings": {
+        "desktop_image": "shopify://shop_images/photo_2026-07-23_14-34-01.jpg",
+        "desktop_height": 620,
+        "mobile_height": 600,
+        "eyebrow": "Shop the edit",
+        "heading": "Discover Your Taste",
+        "button_label": "See more",
+        "button_link": "shopify://collections",
+        "accent_color": "#C8A24A",
+        "point_1_product": "fleece-jacket",
+        "point_1_desktop_x": 55,
+        "point_1_desktop_y": 40,
+        "point_1_mobile_x": 68,
+        "point_1_mobile_y": 40,
+        "point_2_product": "fly-better",
+        "point_2_desktop_x": 34,
+        "point_2_desktop_y": 41,
+        "point_2_mobile_x": 12,
+        "point_2_mobile_y": 43,
+        "point_3_product": "",
+        "point_3_desktop_x": 70,
+        "point_3_desktop_y": 55,
+        "point_3_mobile_x": 70,
+        "point_3_mobile_y": 55,
+        "point_4_product": "",
+        "point_4_desktop_x": 35,
+        "point_4_desktop_y": 70,
+        "point_4_mobile_x": 35,
+        "point_4_mobile_y": 70,
+        "point_5_product": "",
+        "point_5_desktop_x": 80,
+        "point_5_desktop_y": 20,
+        "point_5_mobile_x": 80,
+        "point_5_mobile_y": 20
+      }
+    },
+    "display_collections_VmznAw": {
+      "type": "display-collections",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "cta_MAGPAc": {
+          "type": "cta",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "bg_type": "image",
+            "image": "shopify://shop_images/BEAMS_leatherjacketsfeellived-infromthe.jpg",
+            "gradient_start": "#a18cd1",
+            "gradient_end": "#fbc2eb",
+            "gradient_direction": "135deg",
+            "eyebrow": "Featured",
+            "eyebrow_color": "#000000",
+            "title": "Jackets",
+            "title_color": "#FFFFFF",
+            "text": "",
+            "text_color": "#000000",
+            "button_label": "Shop now",
+            "link": "shopify://collections/vest",
+            "bg": "#d8d8d8"
           }
         },
-        "button": {
-          "type": "buttons",
+        "cta_Jke4c7": {
+          "type": "cta",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "bg_type": "image",
+            "image": "shopify://shop_images/IMG_2158.jpg",
+            "gradient_start": "#a18cd1",
+            "gradient_end": "#fbc2eb",
+            "gradient_direction": "135deg",
+            "eyebrow": "Featured",
+            "eyebrow_color": "#000000",
+            "title": "T-shirts",
+            "title_color": "#FFFFFF",
+            "text": "",
+            "text_color": "#000000",
+            "button_label": "Shop now",
+            "link": "shopify://collections/t-shirt",
+            "bg": "#d8d8d8"
+          }
+        },
+        "cta_tcLWKw": {
+          "type": "cta",
+          "settings": {
+            "bg_type": "image",
+            "image": "shopify://shop_images/photo_2026-01-29_16-07-59.jpg",
+            "gradient_start": "#a18cd1",
+            "gradient_end": "#fbc2eb",
+            "gradient_direction": "135deg",
+            "eyebrow": "Featured",
+            "eyebrow_color": "#000000",
+            "title": "Best Seller",
+            "title_color": "#FFFFFF",
+            "text": "",
+            "text_color": "#000000",
+            "button_label": "Shop now",
+            "link": "shopify://collections/frontpage",
+            "bg": "#d8d8d8"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "cta_MAGPAc",
+        "cta_Jke4c7",
+        "cta_tcLWKw"
       ],
+      "name": "Display-collections",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "text": "Featured Collections",
+        "text_position": "center",
+        "desc": "Discover our Latest Collections"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "before_after_JQc6Cy": {
+      "type": "before-after",
+      "name": "Before / After ",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "heading": "See the Difference",
+        "text": "<p>Drag the slider to compare the images.</p>",
+        "before": "shopify://shop_images/Gemini_Generated_Image_9q0d3y9q0d3y9q0d.png",
+        "after": "shopify://shop_images/photo_2026-01-29_16-08-15.jpg",
+        "before_label": "Before",
+        "after_label": "After",
+        "image_height": 550,
+        "default_position": 50,
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "instgram_feed_mgAWC4": {
+      "type": "instgram-feed",
+      "blocks": {
+        "image_QCL4tD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/photo_2026-01-29_16-09-34.jpg",
+            "alt": ""
+          }
+        },
+        "image_3UFp4d": {
+          "type": "image",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "image_iwHkyH": {
+          "type": "image",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "image_aNfUEQ": {
+          "type": "image",
+          "settings": {
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_QCL4tD",
+        "image_3UFp4d",
+        "image_iwHkyH",
+        "image_aNfUEQ"
+      ],
+      "name": "Instagram Feed",
+      "settings": {
+        "heading": "Follow Us on Instagram",
+        "heading_color": "#333333",
+        "subtitle": "Tag us in your photos for a chance to be featured!",
+        "subtitle_color": "#666666",
+        "instagram_handle": "@yourstore",
+        "instagram_url": "",
+        "speed": 10
+      }
+    },
+    "faq_3eNWA7": {
+      "type": "faq",
+      "blocks": {
+        "question_Gj8DjH": {
+          "type": "question",
+          "settings": {
+            "title": "Frequently asked question",
+            "answer": "<p>Answer to the frequently asked question goes here.</p>",
+            "question_bg_color": "",
+            "question_text_color": "",
+            "answer_bg_color": "",
+            "answer_text_color": "",
+            "border_color": ""
+          }
+        },
+        "question_ETTw7d": {
+          "type": "question",
+          "settings": {
+            "title": "Frequently asked question",
+            "answer": "<p>Answer to the frequently asked question goes here.</p>",
+            "question_bg_color": "",
+            "question_text_color": "",
+            "answer_bg_color": "",
+            "answer_text_color": "",
+            "border_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_Gj8DjH",
+        "question_ETTw7d"
+      ],
+      "name": "FAQ Section",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "subheading": "Need help?",
+        "description": "<p>Find answers to common questions about our products and services.</p>",
+        "heading_alignment": "center",
+        "content_width": 800,
+        "allow_multiple": false,
+        "open_first_item": false,
+        "rounded_corners": true,
+        "border_radius": 8,
+        "show_contact_link": true,
+        "contact_text": "Still have questions?",
+        "contact_link_text": "Contact us",
+        "contact_link": "",
+        "background_color": "#ffffff",
+        "text_color": "#333333",
+        "heading_color": "#000000",
+        "subheading_color": "#666666",
+        "accent_color": "#2563eb",
+        "border_color": "#e5e7eb",
+        "hover_color": "#f3f4f6",
+        "question_bg_color": "#f9fafb",
+        "question_text_color": "#111827",
+        "answer_background_color": "#ffffff",
+        "answer_text_color": "#374151",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero_section_NiJXKp",
+    "display_collections_VmznAw",
+    "before_after_JQc6Cy",
+    "instgram_feed_mgAWC4",
+    "faq_3eNWA7"
   ]
 }

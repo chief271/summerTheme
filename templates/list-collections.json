@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-list-collections",
+      "disabled": true,
       "settings": {
         "title": "Collections",
         "sort": "alphabetical",
@@ -9,9 +19,73 @@
         "columns_desktop": 3,
         "columns_mobile": "2"
       }
+    },
+    "collection_list_grid_GV3W3r": {
+      "type": "collection-list-grid",
+      "blocks": {
+        "collection_ExdiLz": {
+          "type": "collection",
+          "settings": {
+            "collection": "t-shirt",
+            "show_count": true
+          }
+        },
+        "collection_aMgAFg": {
+          "type": "collection",
+          "settings": {
+            "collection": "vest",
+            "show_count": true
+          }
+        },
+        "collection_CzpYhY": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "show_count": true
+          }
+        }
+      },
+      "block_order": [
+        "collection_ExdiLz",
+        "collection_aMgAFg",
+        "collection_CzpYhY"
+      ],
+      "name": "Collection List Grid",
+      "settings": {
+        "columns_desktop": 4,
+        "columns_mobile": "2"
+      }
+    },
+    "collection_list_header_hngcjD": {
+      "type": "collection-list-header",
+      "name": "Collection List Header",
+      "settings": {
+        "heading": "Shop by Category",
+        "subtext": "Browse our full range of collections.",
+        "bg_image": "shopify://shop_images/telechargement_1.jpg",
+        "bg_color": "#f5f5f5",
+        "text_color": "#111111"
+      }
+    },
+    "collection_showcase_wyQCDb": {
+      "type": "collection-showcase",
+      "name": "Collection Showcase",
+      "settings": {
+        "collection": "t-shirt",
+        "custom_image": "shopify://shop_images/IMG_2158.jpg",
+        "heading": "Shop the Collection",
+        "subtext": "",
+        "show_button": true,
+        "button_label": "Shop Collection",
+        "product_count": 4,
+        "columns": 2
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "collection_list_header_hngcjD",
+    "collection_showcase_wyQCDb",
+    "collection_list_grid_GV3W3r"
   ]
 }
