@@ -1,0 +1,356 @@
+{{ 'hero-slideshow.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="hero-slideshow color-{{ section.settings.color_scheme }}"
+  style="--hero-height: {{ section.settings.height }}px; --hero-height-mobile: {{ section.settings.height_mobile }}px; --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+  data-hero-slideshow
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+>
+
+  <div class="hero-slideshow__slides">
+    {% for block in section.blocks %}
+      {% if block.type == "slide" %}
+        <div
+          class="hero-slideshow__slide{% if forloop.first %} is-active{% endif %}"
+          data-hero-slide
+          {{ block.shopify_attributes }}
+        >
+
+          <div class="hero-slideshow__media">
+            {% if block.settings.media_type == "video" and block.settings.video != blank %}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1920x' }}
+            {% elsif block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 2000 }}"
+                srcset="{{ block.settings.image | image_url: width: 750 }} 750w,
+                        {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                        {{ block.settings.image | image_url: width: 2000 }} 2000w"
+                sizes="100vw"
+                alt="{{ block.settings.image.alt | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {% endif %}
+            <div class="hero-slideshow__overlay"></div>
+          </div>
+
+          <div class="hero-slideshow__content page-width">
+            {% if block.settings.heading != blank %}
+              <h2 class="hero-slideshow__heading">{{ block.settings.heading }}</h2>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <div class="hero-slideshow__text">{{ block.settings.text }}</div>
+            {% endif %}
+
+            {% if block.settings.button_1_label != blank or block.settings.button_2_label != blank %}
+              <div class="hero-slideshow__buttons">
+                {% if block.settings.button_1_label != blank %}
+                  <a
+                    href="{{ block.settings.button_1_link | default: '#' }}"
+                    class="button {% if block.settings.button_1_style == 'secondary' %}button--secondary{% else %}button--primary{% endif %}"
+                  >
+                    {{ block.settings.button_1_label }}
+                  </a>
+                {% endif %}
+
+                {% if block.settings.button_2_label != blank %}
+                  <a
+                    href="{{ block.settings.button_2_link | default: '#' }}"
+                    class="button {% if block.settings.button_2_style == 'secondary' %}button--secondary{% else %}button--primary{% endif %}"
+                  >
+                    {{ block.settings.button_2_label }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if section.blocks.size > 1 %}
+  <div class="hero-slideshow__progress hero-slideshow__progress--{{ section.settings.progress_position }}" data-hero-progress>
+    {% for block in section.blocks %}
+      {% if block.type == "slide" %}
+        <button
+          type="button"
+          class="hero-slideshow__progress-bar{% if forloop.first %} is-active{% endif %}"
+          data-hero-progress-bar
+          data-index="{{ forloop.index0 }}"
+          aria-label="Go to slide {{ forloop.index }}">
+          <span class="hero-slideshow__progress-fill" data-hero-progress-fill></span>
+        </button>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if section.settings.show_arrows and section.blocks.size > 1 %}
+  <button type="button" class="hero-slideshow__arrow hero-slideshow__arrow--prev" data-hero-prev aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" class="hero-slideshow__arrow hero-slideshow__arrow--next" data-hero-next aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+{% endif %}
+
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-hero-slideshow]').forEach(function (root) {
+      var slides = root.querySelectorAll('[data-hero-slide]');
+      var bars = root.querySelectorAll('[data-hero-progress-bar]');
+      var fills = root.querySelectorAll('[data-hero-progress-fill]');
+      var prevBtn = root.querySelector('[data-hero-prev]');
+      var nextBtn = root.querySelector('[data-hero-next]');
+      var current = 0;
+      var timer = null;
+      var autoplay = root.dataset.autoplay === 'true';
+      var speed = parseInt(root.dataset.autoplaySpeed, 10) || 5000;
+
+      if (slides.length <= 1) return;
+
+      function setFillState(index) {
+        fills.forEach(function (fill, i) {
+          fill.classList.remove('is-filling');
+          fill.style.animationDuration = '';
+          if (i < index) {
+            fill.style.width = '100%';
+          } else if (i === index) {
+            if (autoplay) {
+              fill.style.width = '';
+              // force reflow so the animation restarts every time
+              void fill.offsetWidth;
+              fill.style.animationDuration = speed + 'ms';
+              fill.classList.add('is-filling');
+            } else {
+              fill.style.width = '100%';
+            }
+          } else {
+            fill.style.width = '0%';
+          }
+        });
+      }
+
+      function goTo(index) {
+        slides[current].classList.remove('is-active');
+        bars[current] && bars[current].classList.remove('is-active');
+
+        current = (index + slides.length) % slides.length;
+
+        slides[current].classList.add('is-active');
+        bars[current] && bars[current].classList.add('is-active');
+        setFillState(current);
+      }
+
+      function next() { goTo(current + 1); }
+      function prev() { goTo(current - 1); }
+
+      function startAutoplay() {
+        if (!autoplay) return;
+        stopAutoplay();
+        timer = setInterval(next, speed);
+      }
+
+      function stopAutoplay() {
+        if (timer) clearInterval(timer);
+      }
+
+      nextBtn && nextBtn.addEventListener('click', function () { next(); startAutoplay(); });
+      prevBtn && prevBtn.addEventListener('click', function () { prev(); startAutoplay(); });
+
+      bars.forEach(function (bar) {
+        bar.addEventListener('click', function () {
+          goTo(parseInt(bar.dataset.index, 10));
+          startAutoplay();
+        });
+      });
+
+      root.addEventListener('mouseenter', stopAutoplay);
+      root.addEventListener('mouseleave', startAutoplay);
+
+      setFillState(0);
+      startAutoplay();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slideshow",
+  "tag": "section",
+  "class": "section section--full-width",
+  "settings": [
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height (desktop)",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 650
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height (mobile)",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay darkness",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+  "type": "select",
+  "id": "progress_position",
+  "label": "Progress bar position",
+  "options": [
+    { "value": "top-right", "label": "Top right (compact)" },
+    { "value": "top", "label": "Top (full width, Instagram style)" }
+  ],
+  "default": "top-right"
+},
+{
+  "type": "checkbox",
+  "id": "show_arrows",
+  "label": "Show arrow navigation",
+  "default": false
+},
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Also used as video poster if video fails to load"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "New Collection"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Discover the latest drop.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Button 1"
+        },
+        {
+          "type": "text",
+          "id": "button_1_label",
+          "label": "Label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_1_style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "header",
+          "content": "Button 2"
+        },
+        {
+          "type": "text",
+          "id": "button_2_label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_2_style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "secondary"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Hero Slideshow",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

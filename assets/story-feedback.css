@@ -1,0 +1,183 @@
+.story-feedback{
+    padding-top: var(--story-feedback-padding-top, var(--spacing-sections-desktop));
+    padding-bottom: var(--story-feedback-padding-bottom, var(--spacing-sections-desktop));
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+}
+
+.story-feedback .page-width{
+    max-width: var(--page-width);
+}
+
+.story-feedback__header{
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.story-feedback__header h2{
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: calc(3rem * var(--font-heading-scale));
+    margin: 0;
+}
+
+/* the "phone" story viewer, centered */
+.story-feedback__viewer{
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 9/16;
+    margin: 0 auto;
+    border-radius: var(--media-radius, 12px);
+    overflow: hidden;
+    background: #000;
+    isolation: isolate;
+}
+
+/* progress bars — Instagram story style, full width top */
+.story-feedback__progress{
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 4;
+    display: flex;
+    gap: .4rem;
+}
+
+.story-feedback__progress-bar{
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,.35);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.story-feedback__progress-fill{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #fff;
+}
+
+.story-feedback__progress-fill.is-filling{
+    animation: story-progress-fill linear forwards;
+}
+
+@keyframes story-progress-fill{
+    from{ width: 0%; }
+    to{ width: 100%; }
+}
+
+/* account row — avatar + name, like the poster of the story */
+.story-feedback__header-row{
+    position: absolute;
+    top: 2.2rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+.story-feedback__avatar{
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,.5);
+}
+
+.story-feedback__account-name{
+    color: #fff;
+    font-family: var(--font-body-family);
+    font-weight: var(--font-body-weight);
+    font-size: 1.3rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+
+/* slides */
+.story-feedback__slides{
+    position: absolute;
+    inset: 0;
+}
+
+.story-feedback__slide{
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease;
+}
+
+.story-feedback__slide.is-active{
+    opacity: 1;
+    visibility: visible;
+    z-index: 1;
+}
+
+.story-feedback__slide img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.story-feedback__placeholder{
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.08);
+}
+
+/* caption overlay for quote/customer name */
+.story-feedback__caption{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 3rem 1.6rem 2rem;
+    background: linear-gradient(to top, rgba(0,0,0,.7), transparent);
+    color: #fff;
+}
+
+.story-feedback__quote{
+    font-family: var(--font-body-family);
+    font-weight: var(--font-body-weight);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 0 0 .6rem;
+}
+
+.story-feedback__customer{
+    font-size: 1.3rem;
+    opacity: .85;
+    margin: 0;
+}
+
+/* tap zones — left half = prev, right half = next (like real stories) */
+.story-feedback__tap-zone{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 3;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.story-feedback__tap-zone--prev{ left: 0; }
+.story-feedback__tap-zone--next{ right: 0; }
+
+@media (prefers-reduced-motion: reduce){
+    .story-feedback__progress-fill.is-filling{
+        animation: none;
+        width: 100%;
+    }
+}

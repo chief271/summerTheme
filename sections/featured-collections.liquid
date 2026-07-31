@@ -1,0 +1,232 @@
+{{ 'featured-collections.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="featured-collections color-{{ section.settings.color_scheme }}"
+  style="--featured-collections-padding-top: {{ section.settings.padding_top }}px; --featured-collections-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+
+    <div class="featured-collections__header">
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="featured-collections__text">{{ section.settings.text }}</div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 1 %}
+      <div class="featured-collections__tabs" role="tablist" data-fc-tabs>
+        {% for block in section.blocks %}
+          {% if block.type == "collection" %}
+            {% assign tab_collection = block.settings.collection %}
+            {% assign tab_title = block.settings.title | default: tab_collection.title %}
+            <button
+              type="button"
+              class="featured-collections__tab{% if forloop.first %} is-active{% endif %}"
+              role="tab"
+              data-fc-tab
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ tab_title }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="featured-collections__panels" data-fc-panels>
+      {% for block in section.blocks %}
+        {% if block.type == "collection" %}
+          {% assign panel_collection = block.settings.collection %}
+
+          <div
+            class="featured-collections__panel{% if forloop.first %} is-active{% endif %}"
+            data-fc-panel
+            data-index="{{ forloop.index0 }}"
+          >
+
+            {% if panel_collection != blank %}
+              <ul class="featured-collections__grid">
+                {% for product in panel_collection.products limit: 4 %}
+                  <li class="featured-collections__item">
+                    <a href="{{ product.url }}" class="featured-collections__card">
+                      <div class="featured-collections__image-wrap">
+                        {% if product.featured_image %}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 600 }}"
+                            srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                                    {{ product.featured_image | image_url: width: 600 }} 600w,
+                                    {{ product.featured_image | image_url: width: 800 }} 800w"
+                            sizes="(min-width: 750px) 25vw, 50vw"
+                            alt="{{ product.featured_image.alt | escape }}"
+                            loading="lazy">
+
+                          {% if product.images.size > 1 %}
+                            <img
+                              src="{{ product.images[1] | image_url: width: 600 }}"
+                              alt="{{ product.images[1].alt |  escape}}"
+                              class="featured-collections__image--hover"
+                              loading="lazy">
+                          {% endif %}
+                        {% else %}
+                          <div class="featured-collections__image-placeholder"></div>
+                        {% endif %}
+
+                        {% if product.compare_at_price > product.price %}
+                          <span class="featured-collections__badge">Sale</span>
+                        {% endif %}
+                      </div>
+
+                      <div class="featured-collections__card-info">
+                        <p class="featured-collections__card-title">{{ product.title }}</p>
+                        <p class="featured-collections__card-price">
+                          {% if product.compare_at_price > product.price %}
+                            <span class="featured-collections__price--sale">{{ product.price | money }}</span>
+                            <span class="featured-collections__price--compare">{{ product.compare_at_price | money }}</span>
+                          {% else %}
+                            {{ product.price | money }}
+                          {% endif %}
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {% if section.settings.show_view_more %}
+                <div class="featured-collections__view-more">
+                  <a href="{{ panel_collection.url }}" class="button button--secondary">
+                    {{ section.settings.view_more_label | default: "View more" }}
+                  </a>
+                </div>
+              {% endif %}
+            {% else %}
+              <p class="featured-collections__empty">Select a collection for this tab.</p>
+            {% endif %}
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-fc-tabs]').forEach(function (tabsRoot) {
+      var section = tabsRoot.closest('.featured-collections');
+      var panelsRoot = section.querySelector('[data-fc-panels]');
+      var tabs = tabsRoot.querySelectorAll('[data-fc-tab]');
+      var panels = panelsRoot.querySelectorAll('[data-fc-panel]');
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var index = tab.dataset.index;
+
+          tabs.forEach(function (t) { t.classList.remove('is-active'); });
+          panels.forEach(function (p) { p.classList.remove('is-active'); });
+
+          tab.classList.add('is-active');
+          var targetPanel = panelsRoot.querySelector('[data-index="' + index + '"]');
+          if (targetPanel) targetPanel.classList.add('is-active');
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Collections",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Collections"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_more",
+      "label": "Show \"view more\" button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_more_label",
+      "label": "Button label",
+      "default": "View more"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab title",
+          "info": "Leave blank to use the collection's title"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Featured Collections",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}
