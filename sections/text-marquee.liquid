@@ -1,0 +1,271 @@
+{{ 'text-marquee.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="text-marquee color-{{ section.settings.color_scheme }}"
+  style="--marquee-padding-top: {{ section.settings.padding_top }}px; --marquee-padding-bottom: {{ section.settings.padding_bottom }}px; --marquee-font-size: {{ section.settings.font_size }}rem; --marquee-image-size: {{ section.settings.image_size }}px; --marquee-gap: {{ section.settings.gap }}rem;"
+>
+
+  {% comment %} ---------- Build TOP row content ---------- {% endcomment %}
+  {% assign top_has_image = false %}
+  {% for block in section.blocks %}
+    {% if block.settings.row == "top" %}{% assign top_has_image = true %}{% endif %}
+  {% endfor %}
+
+  {% capture top_content %}
+    {% if top_has_image %}
+      {% for i in (1..8) %}
+        {% for block in section.blocks %}
+          {% if block.type == "product_image" and block.settings.row == "top" %}
+            {% for j in (1..section.settings.repeats_between_images) %}
+              <span class="text-marquee__text">{{ section.settings.text_top }}</span>
+            {% endfor %}
+            <span class="text-marquee__image-wrap" {{ block.shopify_attributes }}>
+  {% if block.settings.image != blank %}
+    {% if block.settings.product != blank %}
+      <a href="{{ block.settings.product.url }}" aria-label="{{ block.settings.product.title | escape }}">
+        <img
+          src="{{ block.settings.image | image_url: width: 300 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="150"
+          height="150">
+      </a>
+    {% else %}
+      <img
+        src="{{ block.settings.image | image_url: width: 300 }}"
+        alt="{{ block.settings.image.alt | escape }}"
+        loading="lazy"
+        width="150"
+        height="150">
+    {% endif %}
+  {% endif %}
+</span>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..16) %}
+        <span class="text-marquee__text">{{ section.settings.text_top }}</span>
+      {% endfor %}
+    {% endif %}
+  {% endcapture %}
+
+  {% comment %} ---------- Build BOTTOM row content ---------- {% endcomment %}
+  {% assign bottom_has_image = false %}
+  {% for block in section.blocks %}
+    {% if block.settings.row == "bottom" %}{% assign bottom_has_image = true %}{% endif %}
+  {% endfor %}
+
+  {% capture bottom_content %}
+    {% if bottom_has_image %}
+      {% for i in (1..8) %}
+        {% for block in section.blocks %}
+          {% if block.type == "product_image" and block.settings.row == "bottom" %}
+            {% for j in (1..section.settings.repeats_between_images) %}
+              <span class="text-marquee__text">{{ section.settings.text_bottom }}</span>
+            {% endfor %}
+            <span class="text-marquee__image-wrap" {{ block.shopify_attributes }}>
+  {% if block.settings.image != blank %}
+    {% if block.settings.product != blank %}
+      <a href="{{ block.settings.product.url }}" aria-label="{{ block.settings.product.title | escape }}">
+        <img
+          src="{{ block.settings.image | image_url: width: 300 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="150"
+          height="150">
+      </a>
+    {% else %}
+      <img
+        src="{{ block.settings.image | image_url: width: 300 }}"
+        alt="{{ block.settings.image.alt | escape }}"
+        loading="lazy"
+        width="150"
+        height="150">
+    {% endif %}
+  {% endif %}
+</span>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..16) %}
+        <span class="text-marquee__text">{{ section.settings.text_bottom }}</span>
+      {% endfor %}
+    {% endif %}
+  {% endcapture %}
+
+  <div
+    class="text-marquee__row text-marquee__row--top{% if section.settings.pause_on_hover %} text-marquee__row--pause-hover{% endif %}"
+    style="--marquee-duration: {{ section.settings.speed_top }}s;"
+  >
+    <div class="text-marquee__track">
+      {{ top_content }}
+      {{ top_content }}
+    </div>
+  </div>
+
+  <div
+    class="text-marquee__row text-marquee__row--bottom{% if section.settings.pause_on_hover %} text-marquee__row--pause-hover{% endif %}"
+    style="--marquee-duration: {{ section.settings.speed_bottom }}s;"
+  >
+    <div class="text-marquee__track">
+      {{ bottom_content }}
+      {{ bottom_content }}
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Text Marquee",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_top",
+      "label": "Top row text",
+      "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "text",
+      "id": "text_bottom",
+      "label": "Bottom row text",
+      "default": "SHOP THE DROP"
+    },
+    {
+      "type": "range",
+      "id": "speed_top",
+      "label": "Top row speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "speed_bottom",
+      "label": "Bottom row speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size",
+      "min": 2,
+      "max": 12,
+      "step": 0.5,
+      "unit": "rem",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Product image size",
+      "min": 60,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "default": 130
+    },
+    {
+  "type": "range",
+  "id": "gap",
+  "label": "Spacing between items",
+  "min": 0.5,
+  "max": 5,
+  "step": 0.5,
+  "unit": "rem",
+  "default": 1.5
+},
+    {
+      "type": "range",
+      "id": "repeats_between_images",
+      "label": "Text repeats between images",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+  "type": "product_image",
+  "name": "Product image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Link to product"
+    },
+    {
+      "type": "select",
+      "id": "row",
+      "label": "Show in row",
+      "options": [
+        { "value": "top", "label": "Top row" },
+        { "value": "bottom", "label": "Bottom row" }
+      ],
+      "default": "top"
+    }
+  ]
+}
+  ],
+  "presets": [
+    {
+      "name": "Text Marquee",
+      "blocks": [
+        { "type": "product_image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
