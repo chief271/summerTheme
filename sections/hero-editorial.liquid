@@ -1,0 +1,244 @@
+{{ 'hero-editorial.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-editorial.js' | asset_url }}" defer></script>
+
+<section
+  class="hero-editorial color-{{ section.settings.color_scheme }}"
+  id="Hero-{{ section.id }}"
+>
+
+  {% if section.settings.background != blank %}
+    <div class="hero-editorial__background">
+      {{
+        section.settings.background
+        | image_url: width: 2200
+        | image_tag:
+        loading: 'lazy',
+        class: 'hero-editorial__bg-image'
+      }}
+    </div>
+  {% endif %}
+
+  <div class="page-width">
+
+    <div class="hero-editorial__wrapper {% if section.settings.image_position == 'left' %}image-left{% endif %}">
+
+      {% assign featured_product = all_products[section.settings.product] %}
+
+      <div class="hero-editorial__content">
+
+        {% if section.settings.badge != blank %}
+          <span class="hero-editorial__badge">
+            {{ section.settings.badge }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h1 class="hero-editorial__heading">
+            {{ section.settings.heading }}
+          </h1>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="hero-editorial__text rte">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        <div class="hero-editorial__buttons">
+
+          {% if section.settings.button_label != blank %}
+            <a href="{{ section.settings.button_link }}" class="button">
+              {{ section.settings.button_label }}
+            </a>
+          {% endif %}
+
+          {% if section.settings.button2_label != blank %}
+            <a href="{{ section.settings.button2_link }}" class="button button--secondary">
+              {{ section.settings.button2_label }}
+            </a>
+          {% endif %}
+
+        </div>
+
+        {% if section.settings.show_rating %}
+          <div class="hero-editorial__rating">
+
+            <span>★★★★★</span>
+
+            {% if section.settings.review_count != blank %}
+              <span>
+                {{ section.settings.review_count }} Reviews
+              </span>
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+      </div>
+
+
+      <div class="hero-editorial__media">
+
+        {% if featured_product != blank %}
+
+          <a href="{{ featured_product.url }}" class="hero-editorial__product">
+
+            {{
+              featured_product.featured_image
+              | image_url: width: 900
+              | image_tag:
+                loading: 'lazy',
+                class: 'hero-editorial__image'
+            }}
+
+            {% if section.settings.show_product_name %}
+              <h3 class="hero-editorial__product-title">
+                {{ featured_product.title }}
+              </h3>
+            {% endif %}
+
+            {% if section.settings.show_price %}
+              <div class="hero-editorial__price">
+                {{ featured_product.price | money }}
+              </div>
+            {% endif %}
+
+          </a>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+
+    {
+      "type":"product",
+      "id":"product",
+      "label":"Featured Product"
+    },
+
+    {
+      "type":"text",
+      "id":"badge",
+      "label":"Badge",
+      "default":"NEW COLLECTION"
+    },
+
+    {
+      "type":"text",
+      "id":"heading",
+      "label":"Heading",
+      "default":"Premium Essentials"
+    },
+
+    {
+      "type":"richtext",
+      "id":"text",
+      "label":"Description",
+      "default":"<p>Designed for everyday comfort with timeless style.</p>"
+    },
+
+    {
+      "type":"text",
+      "id":"button_label",
+      "label":"Primary Button",
+      "default":"Shop Now"
+    },
+
+    {
+      "type":"url",
+      "id":"button_link",
+      "label":"Primary Link"
+    },
+
+    {
+      "type":"text",
+      "id":"button2_label",
+      "label":"Secondary Button",
+      "default":"Explore"
+    },
+
+    {
+      "type":"url",
+      "id":"button2_link",
+      "label":"Secondary Link"
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_rating",
+      "label":"Show Rating",
+      "default":true
+    },
+
+    {
+      "type":"text",
+      "id":"review_count",
+      "label":"Review Text",
+      "default":"2,000+"
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_product_name",
+      "label":"Show Product Name",
+      "default":true
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_price",
+      "label":"Show Price",
+      "default":true
+    },
+
+    {
+      "type":"select",
+      "id":"image_position",
+      "label":"Image Position",
+      "default":"right",
+      "options":[
+        {
+          "value":"left",
+          "label":"Left"
+        },
+        {
+          "value":"right",
+          "label":"Right"
+        }
+      ]
+    },
+
+    {
+      "type":"image_picker",
+      "id":"background",
+      "label":"Background Image"
+    },
+
+    {
+      "type":"color_scheme",
+      "id":"color_scheme",
+      "label":"Color Scheme",
+      "default":"scheme-1"
+    }
+
+  ],
+
+  "presets":[
+    {
+      "name":"Editorial Hero"
+    }
+  ]
+}
+{% endschema %}

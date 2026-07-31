@@ -1,0 +1,188 @@
+{{ 'countdown-timer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
+
+{% if section.settings.hide_when_finished %}
+  <style>
+    .countdown-hidden {
+      display: none !important;
+    }
+  </style>
+{% endif %}
+
+<section
+  class="countdown-section color-{{ section.settings.color_scheme }}"
+  id="Countdown-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-end-date="{{ section.settings.end_date }}"
+  data-hide="{{ section.settings.hide_when_finished }}"
+>
+
+  {% if section.settings.background != blank %}
+    <div class="countdown-background">
+      {{
+        section.settings.background
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'lazy',
+          class: 'countdown-bg-image'
+      }}
+    </div>
+  {% endif %}
+
+  <div class="countdown-overlay"></div>
+
+  <div class="page-width">
+
+    <div class="countdown-content">
+
+      {% if section.settings.heading != blank %}
+        <h2 class="countdown-heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+        <div class="countdown-description rte">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+
+      <div class="countdown-timer">
+
+        <div class="countdown-item">
+          <span class="countdown-value" data-days>00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-value" data-hours>00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-value" data-minutes>00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-value" data-seconds>00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+
+      </div>
+
+      <div
+        class="countdown-expired hidden"
+        data-expired-message
+      >
+        {{ section.settings.expired_message }}
+      </div>
+
+      {% if section.settings.button_label != blank or section.settings.button2_label != blank %}
+        <div class="countdown-buttons">
+
+          {% if section.settings.button_label != blank %}
+            <a
+              href="{{ section.settings.button_link }}"
+              class="button"
+            >
+              {{ section.settings.button_label }}
+            </a>
+          {% endif %}
+
+          {% if section.settings.button2_label != blank %}
+            <a
+              href="{{ section.settings.button2_link }}"
+              class="button button--secondary"
+            >
+              {{ section.settings.button2_label }}
+            </a>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Countdown Timer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Limited Time Offer"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Don't miss our biggest sale of the season.</p>"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date",
+      "info": "Example: 2026-12-31T23:59:59",
+      "default": "2026-12-31T23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "expired_message",
+      "label": "Expired Message",
+      "default": "This promotion has ended."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_finished",
+      "label": "Hide section after countdown",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "background",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button2_label",
+      "label": "Secondary Button Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown Timer"
+    }
+  ]
+}
+{% endschema %}

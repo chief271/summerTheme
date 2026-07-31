@@ -1,0 +1,224 @@
+{{ 'featured-editorial.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-editorial page-width">
+
+  {% if section.settings.heading != blank %}
+    <div class="section-header center">
+      <h2 class="title {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+
+      {% if section.settings.description != blank %}
+        <div class="rte">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% assign collection = section.settings.collection %}
+
+  {% if collection != blank %}
+
+    <div class="featured-editorial__grid">
+
+      {% for product in collection.products limit: section.settings.products_to_show %}
+
+        {% liquid
+          assign editorial_large = false
+
+          assign position = forloop.index0 | modulo: 4
+
+          if position == 0 or position == 3
+            assign editorial_large = true
+          endif
+        %}
+
+        <div
+          class="featured-editorial__item {% if editorial_large %}featured-editorial__item--large{% endif %}"
+        >
+
+          {% render 'card-product',
+            card_product: product,
+            media_aspect_ratio: section.settings.image_ratio,
+            image_shape: section.settings.image_shape,
+            show_secondary_image: section.settings.show_secondary_image,
+            show_vendor: section.settings.show_vendor,
+            show_rating: section.settings.show_rating,
+            section_id: section.id,
+            quick_add: section.settings.enable_quick_add
+          %}
+
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+  {% else %}
+
+    <div class="featured-editorial__grid">
+
+      {% for i in (1..6) %}
+
+        {% liquid
+          assign editorial_large = false
+
+          assign position = forloop.index0 | modulo: 4
+
+          if position == 0 or position == 3
+            assign editorial_large = true
+          endif
+        %}
+
+        <div
+          class="featured-editorial__item {% if editorial_large %}featured-editorial__item--large{% endif %}"
+        >
+
+          {% render 'card-product',
+            show_vendor: section.settings.show_vendor
+          %}
+
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+  {% endif %}
+
+  {% if section.settings.show_view_all and collection != blank %}
+    <div class="center collection__view-all">
+      <a
+        href="{{ collection.url }}"
+        class="button button--secondary"
+      >
+        View collection
+      </a>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": " Collection Editorial",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+
+    {
+      "type":"text",
+      "id":"heading",
+      "label":"Heading",
+      "default":"Featured Collection"
+    },
+
+    {
+      "type":"richtext",
+      "id":"description",
+      "label":"Description"
+    },
+
+    {
+      "type":"collection",
+      "id":"collection",
+      "label":"Collection"
+    },
+
+    {
+      "type":"range",
+      "id":"products_to_show",
+      "label":"Products",
+      "min":4,
+      "max":12,
+      "step":1,
+      "default":6
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_secondary_image",
+      "label":"Show second image",
+      "default":true
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_vendor",
+      "label":"Show vendor",
+      "default":false
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_rating",
+      "label":"Show rating",
+      "default":true
+    },
+
+    {
+      "type":"checkbox",
+      "id":"enable_quick_add",
+      "label":"Enable quick add",
+      "default":true
+    },
+
+    {
+      "type":"checkbox",
+      "id":"show_view_all",
+      "label":"Show View All button",
+      "default":true
+    },
+
+    {
+      "type":"select",
+      "id":"image_ratio",
+      "label":"Image ratio",
+      "default":"portrait",
+      "options":[
+        {
+          "value":"adapt",
+          "label":"Adapt"
+        },
+        {
+          "value":"portrait",
+          "label":"Portrait"
+        },
+        {
+          "value":"square",
+          "label":"Square"
+        }
+      ]
+    },
+
+    {
+      "type":"select",
+      "id":"image_shape",
+      "label":"Image shape",
+      "default":"default",
+      "options":[
+        {
+          "value":"default",
+          "label":"Default"
+        },
+        {
+          "value":"round",
+          "label":"Round"
+        },
+        {
+          "value":"blob",
+          "label":"Blob"
+        }
+      ]
+    }
+
+  ],
+
+  "presets":[
+    {
+      "name":"Collection Editorial"
+    }
+  ]
+}
+{% endschema %}

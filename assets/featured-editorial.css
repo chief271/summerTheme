@@ -1,0 +1,118 @@
+.featured-editorial {
+    padding: 5rem 0;
+}
+
+.featured-editorial .section-header {
+    margin-bottom: 4rem;
+}
+
+.featured-editorial__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.featured-editorial__item {
+    display: flex;
+}
+
+.featured-editorial__item .card-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.featured-editorial__item .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-editorial__item .card__inner {
+    height: 100%;
+}
+
+.featured-editorial__item .card__media {
+    height: 100%;
+}
+
+.featured-editorial__item .media {
+    height: 100%;
+}
+
+.featured-editorial__item .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+}
+
+.featured-editorial__item:hover img {
+    transform: scale(1.05);
+}
+
+.featured-editorial__item--large {
+    grid-row: span 2;
+}
+
+.featured-editorial__item--large .card__heading {
+    font-size: 2.2rem;
+}
+
+.featured-editorial__item--large .price {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.collection__view-all {
+    margin-top: 5rem;
+}
+
+/* ---------------- Desktop ---------------- */
+
+@media screen and (min-width: 990px) {
+
+    .featured-editorial__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .featured-editorial__item--large {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+
+}
+
+/* ---------------- Tablet ---------------- */
+
+@media screen and (max-width: 989px) {
+
+    .featured-editorial__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+/* ---------------- Mobile ---------------- */
+
+@media screen and (max-width: 749px) {
+
+    .featured-editorial__grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .featured-editorial__item--large {
+        grid-row: span 1;
+    }
+
+    .featured-editorial__item--large .card__heading {
+        font-size: inherit;
+    }
+
+    .featured-editorial__item--large .price {
+        font-size: inherit;
+    }
+
+}
