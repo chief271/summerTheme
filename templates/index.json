@@ -20,7 +20,7 @@
         "heading": "Discover Your Taste",
         "button_label": "See more",
         "button_link": "shopify://collections",
-        "accent_color": "#C8A24A",
+        "accent_color": "#c8a24a",
         "point_1_product": "fleece-jacket",
         "point_1_desktop_x": 55,
         "point_1_desktop_y": 40,
@@ -62,7 +62,7 @@
             "eyebrow": "Featured",
             "eyebrow_color": "#000000",
             "title": "Jackets",
-            "title_color": "#FFFFFF",
+            "title_color": "#ffffff",
             "text": "",
             "text_color": "#000000",
             "button_label": "Shop now",
@@ -81,7 +81,7 @@
             "eyebrow": "Featured",
             "eyebrow_color": "#000000",
             "title": "T-shirts",
-            "title_color": "#FFFFFF",
+            "title_color": "#ffffff",
             "text": "",
             "text_color": "#000000",
             "button_label": "Shop now",
@@ -100,7 +100,7 @@
             "eyebrow": "Featured",
             "eyebrow_color": "#000000",
             "title": "Best Seller",
-            "title_color": "#FFFFFF",
+            "title_color": "#ffffff",
             "text": "",
             "text_color": "#000000",
             "button_label": "Shop now",
@@ -138,6 +138,92 @@
         "padding_bottom": 60
       }
     },
+    "image_with_text_khwnex": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_fT33pj": {
+          "type": "heading",
+          "settings": {
+            "heading": "Best Trousers You can find",
+            "heading_size": "hxl"
+          }
+        },
+        "text_EFmFeD": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "button_YLMYMp": {
+          "type": "button",
+          "settings": {
+            "button_label": "See More",
+            "button_link": "shopify://collections/trousers",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_fT33pj",
+        "text_EFmFeD",
+        "button_YLMYMp"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/IMG-3034.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "zoom-in",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "shop_look_kCAfYn": {
+      "type": "shop-look",
+      "blocks": {
+        "look_slide_NMR9F7": {
+          "type": "look_slide",
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_u4l47yu4l47yu4l4.png",
+            "product_1": "classic-ensemble",
+            "product_1_x": 30,
+            "product_1_y": 56,
+            "product_2": "fleece-jacket",
+            "product_2_x": 70,
+            "product_2_y": 60
+          }
+        },
+        "look_slide_8pMLkD": {
+          "type": "look_slide",
+          "settings": {
+            "image": "shopify://shop_images/IMG-3033.jpg",
+            "product_1": "trouser",
+            "product_1_x": 25,
+            "product_1_y": 50,
+            "product_2": "shorts",
+            "product_2_x": 70,
+            "product_2_y": 60
+          }
+        }
+      },
+      "block_order": [
+        "look_slide_NMR9F7",
+        "look_slide_8pMLkD"
+      ],
+      "name": "Shop the Look",
+      "settings": {
+        "header": "Shop The Look",
+        "desc": "Choose Your Favorite Article"
+      }
+    },
     "instgram_feed_mgAWC4": {
       "type": "instgram-feed",
       "blocks": {
@@ -151,18 +237,28 @@
         "image_3UFp4d": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/B1CBD133-C10F-40C6-881B-DF83AB6D790D.jpg",
+            "alt": ""
+          }
+        },
+        "image_xd4mEJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/79105025-59C4-4CA4-B47D-EDF558299870.jpg",
             "alt": ""
           }
         },
         "image_iwHkyH": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/IMG_2158.jpg",
             "alt": ""
           }
         },
         "image_aNfUEQ": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_u4l47yu4l47yu4l4.png",
             "alt": ""
           }
         }
@@ -170,6 +266,7 @@
       "block_order": [
         "image_QCL4tD",
         "image_3UFp4d",
+        "image_xd4mEJ",
         "image_iwHkyH",
         "image_aNfUEQ"
       ],
@@ -184,14 +281,51 @@
         "speed": 10
       }
     },
+    "slideshow_3cnFMt": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_TccwFJ": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/BEAMS_leatherjacketsfeellived-infromthe.jpg",
+            "image_overlay_opacity": 0,
+            "heading": "Jackets",
+            "heading_size": "h1",
+            "subheading": "Discover Our Best Selling jackets",
+            "button_label": "See More",
+            "link": "shopify://collections/vest",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-2"
+          }
+        }
+      },
+      "block_order": [
+        "slide_TccwFJ"
+      ],
+      "name": "t:sections.slideshow.presets.name",
+      "settings": {
+        "layout": "grid",
+        "slide_height": "medium",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "none",
+        "show_text_below": true,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
     "faq_3eNWA7": {
       "type": "faq",
       "blocks": {
         "question_Gj8DjH": {
           "type": "question",
           "settings": {
-            "title": "Frequently asked question",
-            "answer": "<p>Answer to the frequently asked question goes here.</p>",
+            "title": "How long does shipping take",
+            "answer": "<p>Orders are typically processed within 1–2 business days. Delivery times vary depending on your location and the shipping method selected at checkout</p>",
             "question_bg_color": "",
             "question_text_color": "",
             "answer_bg_color": "",
@@ -202,8 +336,8 @@
         "question_ETTw7d": {
           "type": "question",
           "settings": {
-            "title": "Frequently asked question",
-            "answer": "<p>Answer to the frequently asked question goes here.</p>",
+            "title": "What is your return and exchange policy?",
+            "answer": "<p>We accept returns and exchanges within 30 days of delivery. Items must be unused, in their original condition, and with all original packaging</p>",
             "question_bg_color": "",
             "question_text_color": "",
             "answer_bg_color": "",
@@ -252,7 +386,10 @@
     "hero_section_NiJXKp",
     "display_collections_VmznAw",
     "before_after_JQc6Cy",
+    "image_with_text_khwnex",
+    "shop_look_kCAfYn",
     "instgram_feed_mgAWC4",
+    "slideshow_3cnFMt",
     "faq_3eNWA7"
   ]
 }

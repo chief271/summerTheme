@@ -84,7 +84,12 @@
     width:4px;
     background:rgb(var(--color-background));
     pointer-events:none;
+    /* new: center the icon inside the circle */
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
+
 
 .before-after__handle::after{
     content:"";
@@ -97,6 +102,14 @@
     border-radius:50%;
     transform:translate(-50%,-50%);
     box-shadow:0 0 0 1px rgba(0,0,0,.15);
+}
+
+.before-after__handle-icon{
+    position:relative;
+    z-index:1; /* sits above the ::after circle */
+    width:1.8rem;
+    height:1.8rem;
+    color: rgb(var(--color-foreground));
 }
 
 .before-after__slider{
@@ -132,4 +145,10 @@
 }
 .before-after__slider::-moz-range-track{
     background:transparent;
+}
+
+@media screen and (min-width: 750px){
+    .before-after img{
+        object-fit:contain;
+    }
 }
