@@ -1,0 +1,543 @@
+{{ 'shop-the-look-scroll.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="shop-look color-{{ section.settings.color_scheme }}"
+  style="--shop-look-vh: {{ section.settings.scroll_speed }};"
+>
+  <div class="shop-look__scroll-wrapper" data-shop-look-wrapper style="--look-count: {{ section.blocks.size }};">
+    <div class="shop-look__sticky" data-shop-look-sticky>
+      <div class="page-width shop-look__inner">
+
+        <div class="shop-look__header">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <div class="shop-look__text">{{ section.settings.text }}</div>
+          {% endif %}
+        </div>
+
+        <div class="shop-look__body">
+
+          {% if section.settings.show_thumbnails and section.blocks.size > 1 %}
+            <div class="shop-look__thumbs" data-shop-look-thumbs>
+              {% for block in section.blocks %}
+                {% if block.type == "look" %}
+                  <button
+                    type="button"
+                    class="shop-look__thumb{% if forloop.first %} is-active{% endif %}"
+                    data-shop-look-thumb
+                    data-index="{{ forloop.index0 }}"
+                    aria-label="Go to {{ block.settings.look_number | default: 'look' }}"
+                  >
+                    {% if block.settings.image != blank %}
+                      <img src="{{ block.settings.image | image_url: width: 200 }}" alt="" loading="lazy">
+                    {% endif %}
+                  </button>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="shop-look__stage">
+            {% for block in section.blocks %}
+              {% if block.type == "look" %}
+                <div
+                  class="shop-look__panel{% if forloop.first %} is-active{% endif %}"
+                  data-shop-look-panel
+                  data-index="{{ forloop.index0 }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="shop-look__image-wrap">
+                    {% if block.settings.image != blank %}
+                      <img
+                        src="{{ block.settings.image | image_url: width: 1400 }}"
+                        srcset="{{ block.settings.image | image_url: width: 700 }} 700w,
+                                {{ block.settings.image | image_url: width: 1100 }} 1100w,
+                                {{ block.settings.image | image_url: width: 1400 }} 1400w"
+                        sizes="(min-width: 750px) 50vw, 90vw"
+                        alt="{{ block.settings.image.alt | escape }}"
+                        loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                    {% else %}
+                      <div class="shop-look__image-placeholder"></div>
+                    {% endif %}
+                  </div>
+
+                  <div class="shop-look__caption">
+                    {% if block.settings.look_number != blank %}
+                      <p class="shop-look__number">{{ block.settings.look_number }}</p>
+                    {% endif %}
+                    {% if block.settings.shop_link != blank %}
+                      <a href="{{ block.settings.shop_link }}" class="shop-look__cta">
+                        {{ block.settings.shop_label | default: "Shop the look" }}
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <div class="shop-look__products" data-shop-look-products>
+            {% for block in section.blocks %}
+              {% if block.type == "look" %}
+                <ul
+                  class="shop-look__product-list{% if forloop.first %} is-active{% endif %}"
+                  data-shop-look-product-list
+                  data-index="{{ forloop.index0 }}"
+                >
+                  {% for product in block.settings.products limit: 2 %}
+                    <li class="shop-look__product">
+                      <a href="{{ product.url }}" class="shop-look__product-link">
+                        <div class="shop-look__product-image-wrap">
+                          {% if product.featured_image %}
+                            <img
+                              src="{{ product.featured_image | image_url: width: 300 }}"
+                              alt="{{ product.featured_image.alt | escape }}"
+                              loading="lazy">
+                          {% else %}
+                            <div class="shop-look__product-placeholder"></div>
+                          {% endif %}
+                        </div>
+
+                        <div class="shop-look__product-info">
+                          <p class="shop-look__product-title">{{ product.title }}</p>
+                          <p class="shop-look__product-price">
+                            {% if product.compare_at_price > product.price %}
+                              <span class="shop-look__price--sale">{{ product.price | money }}</span>
+                              <span class="shop-look__price--compare">{{ product.compare_at_price | money }}</span>
+                            {% else %}
+                              {{ product.price | money }}
+                            {% endif %}
+                          </p>
+                        </div>
+                      </a>
+
+                      {% if product.available %}
+                        <button
+                          type="button"
+                          class="shop-look__quick-add"
+                          data-shop-look-quick-add
+                          data-product-id="{{ product.id }}"
+                          aria-label="Quick add {{ product.title | escape }}"
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+
+                        <script type="application/json" data-shop-look-product-json="{{ product.id }}">
+                          {
+                            "id": {{ product.id | json }},
+                            "title": {{ product.title | json }},
+                            "url": {{ product.url | json }},
+                            "image": {{ product.featured_image | image_url: width: 400 | json }},
+                            "options": {{ product.options_with_values | json }},
+                            "variants": [
+                              {% for variant in product.variants %}
+                                {
+                                  "id": {{ variant.id | json }},
+                                  "title": {{ variant.title | json }},
+                                  "available": {{ variant.available | json }},
+                                  "price": {{ variant.price | json }},
+                                  "compare_at_price": {{ variant.compare_at_price | json }},
+                                  "options": {{ variant.options | json }},
+                                  "image": {% if variant.featured_image %}{{ variant.featured_image | image_url: width: 400 | json }}{% else %}null{% endif %}
+                                }{% unless forloop.last %},{% endunless %}
+                              {% endfor %}
+                            ]
+                          }
+                        </script>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick add modal (shared, single instance) -->
+<div class="shop-look-modal" data-shop-look-modal aria-hidden="true">
+  <div class="shop-look-modal__backdrop" data-shop-look-modal-close></div>
+  <div class="shop-look-modal__dialog" role="dialog" aria-modal="true" aria-label="Quick add">
+    <button type="button" class="shop-look-modal__close" data-shop-look-modal-close aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="shop-look-modal__image-wrap">
+      <img data-shop-look-modal-image src="" alt="">
+    </div>
+
+    <div class="shop-look-modal__info">
+      <p class="shop-look-modal__title" data-shop-look-modal-title></p>
+      <p class="shop-look-modal__price" data-shop-look-modal-price></p>
+
+      <div class="shop-look-modal__options" data-shop-look-modal-options></div>
+
+      <button type="button" class="shop-look-modal__add" data-shop-look-modal-add disabled>
+        Add to Cart
+      </button>
+      <p class="shop-look-modal__unavailable" data-shop-look-modal-unavailable hidden>This combination is unavailable</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    /* ---------- scroll-jack (enabled across mobile & desktop) ---------- */
+    document.querySelectorAll('[data-shop-look-wrapper]').forEach(function (wrapper) {
+      var panels = wrapper.querySelectorAll('[data-shop-look-panel]');
+      var productLists = wrapper.querySelectorAll('[data-shop-look-product-list]');
+      var thumbs = wrapper.querySelectorAll('[data-shop-look-thumb]');
+      var count = panels.length;
+      var current = -1;
+
+      if (count === 0) return;
+
+      function setActive(index) {
+        if (index === current) return;
+        current = index;
+        panels.forEach(function (p, i) { p.classList.toggle('is-active', i === index); });
+        productLists.forEach(function (p, i) { p.classList.toggle('is-active', i === index); });
+        thumbs.forEach(function (t, i) {
+          t.classList.toggle('is-active', i === index);
+          if (i === index) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
+      function onScroll() {
+        var rect = wrapper.getBoundingClientRect();
+        var wrapperHeight = wrapper.offsetHeight;
+        var viewportHeight = window.innerHeight;
+        var scrolled = -rect.top;
+        var scrollableDistance = wrapperHeight - viewportHeight;
+
+        if (scrollableDistance <= 0) { setActive(0); return; }
+
+        var progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 0.999);
+        setActive(Math.floor(progress * count));
+      }
+
+      thumbs.forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
+          var index = parseInt(thumb.dataset.index, 10);
+          var wrapperHeight = wrapper.offsetHeight;
+          var viewportHeight = window.innerHeight;
+          var scrollableDistance = wrapperHeight - viewportHeight;
+          var targetProgress = index / count;
+          var wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+
+          window.scrollTo({
+            top: wrapperTop + (targetProgress * scrollableDistance) + 5,
+            behavior: 'smooth'
+          });
+        });
+      });
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+
+      setActive(0);
+      onScroll();
+    });
+
+    /* ---------- quick add modal ---------- */
+    var modal = document.querySelector('[data-shop-look-modal]');
+    if (!modal) return;
+
+    var modalImage = modal.querySelector('[data-shop-look-modal-image]');
+    var modalTitle = modal.querySelector('[data-shop-look-modal-title]');
+    var modalPrice = modal.querySelector('[data-shop-look-modal-price]');
+    var modalOptions = modal.querySelector('[data-shop-look-modal-options]');
+    var modalAddBtn = modal.querySelector('[data-shop-look-modal-add]');
+    var modalUnavailable = modal.querySelector('[data-shop-look-modal-unavailable]');
+
+    var currentProduct = null;
+    var selections = {};
+
+    function moneyFormat(cents) {
+      if (window.Shopify && window.Shopify.formatMoney && window.moneyFormatString) {
+        return window.Shopify.formatMoney(cents, window.moneyFormatString);
+      }
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function findMatchingVariant() {
+      if (!currentProduct) return null;
+      return currentProduct.variants.find(function (variant) {
+        return currentProduct.options.every(function (opt, i) {
+          return variant.options[i] === selections[opt.name];
+        });
+      });
+    }
+
+    function isValueAvailable(optionIndex, value) {
+      return currentProduct.variants.some(function (variant) {
+        if (variant.options[optionIndex] !== value) return false;
+        return currentProduct.options.every(function (opt, i) {
+          if (i === optionIndex) return true;
+          if (!selections[opt.name]) return true;
+          return variant.options[i] === selections[opt.name];
+        }) && variant.available;
+      });
+    }
+
+    function renderOptions() {
+      modalOptions.innerHTML = '';
+
+      currentProduct.options.forEach(function (opt, optionIndex) {
+        var group = document.createElement('div');
+        group.className = 'shop-look-modal__option-group';
+
+        var label = document.createElement('p');
+        label.className = 'shop-look-modal__option-label';
+        label.textContent = opt.name;
+        group.appendChild(label);
+
+        var swatchRow = document.createElement('div');
+        swatchRow.className = 'shop-look-modal__swatches';
+
+        opt.values.forEach(function (value) {
+          var swatch = document.createElement('button');
+          swatch.type = 'button';
+          swatch.className = 'shop-look-modal__swatch';
+          swatch.textContent = value;
+          swatch.dataset.value = value;
+
+          if (selections[opt.name] === value) swatch.classList.add('is-selected');
+          if (!isValueAvailable(optionIndex, value)) swatch.classList.add('is-unavailable');
+
+          swatch.addEventListener('click', function () {
+            selections[opt.name] = value;
+            renderOptions();
+            updateSelectionState();
+          });
+
+          swatchRow.appendChild(swatch);
+        });
+
+        group.appendChild(swatchRow);
+        modalOptions.appendChild(group);
+      });
+    }
+
+    function updateSelectionState() {
+      var variant = findMatchingVariant();
+
+      if (variant) {
+        modalPrice.innerHTML = variant.compare_at_price && variant.compare_at_price > variant.price
+          ? '<span class="shop-look-modal__price--sale">' + moneyFormat(variant.price) + '</span>' +
+            '<span class="shop-look-modal__price--compare">' + moneyFormat(variant.compare_at_price) + '</span>'
+          : moneyFormat(variant.price);
+
+        if (variant.image) modalImage.src = variant.image;
+
+        modalAddBtn.dataset.variantId = variant.id;
+
+        if (variant.available) {
+          modalAddBtn.disabled = false;
+          modalAddBtn.hidden = false;
+          modalUnavailable.hidden = true;
+        } else {
+          modalAddBtn.disabled = true;
+          modalAddBtn.hidden = true;
+          modalUnavailable.hidden = false;
+        }
+      } else {
+        modalAddBtn.disabled = true;
+        modalAddBtn.hidden = true;
+        modalUnavailable.hidden = false;
+      }
+    }
+
+    function openModal(productData) {
+      currentProduct = productData;
+      selections = {};
+
+      var defaultVariant = productData.variants.find(function (v) { return v.available; }) || productData.variants[0];
+      if (defaultVariant) {
+        productData.options.forEach(function (opt, i) {
+          selections[opt.name] = defaultVariant.options[i];
+        });
+      }
+
+      modalTitle.textContent = productData.title;
+      modalImage.src = defaultVariant && defaultVariant.image ? defaultVariant.image : productData.image;
+      modalImage.alt = productData.title;
+
+      renderOptions();
+      updateSelectionState();
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentProduct = null;
+    }
+
+    document.querySelectorAll('[data-shop-look-quick-add]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var productId = btn.dataset.productId;
+        var jsonEl = document.querySelector('[data-shop-look-product-json="' + productId + '"]');
+        if (!jsonEl) return;
+
+        try {
+          var productData = JSON.parse(jsonEl.textContent);
+          openModal(productData);
+        } catch (err) {
+          console.error('Could not parse product data', err);
+        }
+      });
+    });
+
+    modal.querySelectorAll('[data-shop-look-modal-close]').forEach(function (el) {
+      el.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    modalAddBtn.addEventListener('click', function () {
+      if (modalAddBtn.disabled || modalAddBtn.classList.contains('is-loading')) return;
+
+      var variantId = modalAddBtn.dataset.variantId;
+      var originalText = modalAddBtn.textContent;
+
+      modalAddBtn.classList.add('is-loading');
+      modalAddBtn.textContent = 'Adding...';
+
+      fetch((window.Shopify ? window.Shopify.routes.root : '/') + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Add to cart failed');
+          return res.json();
+        })
+        .then(function () {
+          modalAddBtn.textContent = 'Added ✓';
+          modalAddBtn.classList.remove('is-loading');
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          setTimeout(function () {
+            modalAddBtn.textContent = originalText;
+            closeModal();
+          }, 900);
+        })
+        .catch(function () {
+          modalAddBtn.textContent = 'Error';
+          modalAddBtn.classList.remove('is-loading');
+          setTimeout(function () { modalAddBtn.textContent = originalText; }, 1500);
+        });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Shop the Look (Scroll)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Spring Summer 2026"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbnails",
+      "label": "Show thumbnail navigation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll length per look",
+      "info": "Higher = more scrolling needed to move to the next look",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "unit": "vh",
+      "default": 100
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "look_number",
+          "label": "Look label",
+          "default": "Look 01"
+        },
+        {
+          "type": "url",
+          "id": "shop_link",
+          "label": "Shop link"
+        },
+        {
+          "type": "text",
+          "id": "shop_label",
+          "label": "Shop link label",
+          "default": "Shop the look"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products",
+          "limit": 2,
+          "info": "Up to 2 products per look"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Shop the Look (Scroll)",
+      "blocks": [
+        { "type": "look" },
+        { "type": "look" },
+        { "type": "look" }
+      ]
+    }
+  ]
+}
+{% endschema %}

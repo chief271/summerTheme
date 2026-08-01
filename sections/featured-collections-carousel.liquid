@@ -1,0 +1,353 @@
+{{ 'featured-collection-carousel.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="fc-carousel color-{{ section.settings.color_scheme }}"
+  style="--fc-carousel-padding-top: {{ section.settings.padding_top }}px; --fc-carousel-padding-bottom: {{ section.settings.padding_bottom }}px; --fc-carousel-items-desktop: {{ section.settings.items_per_row_desktop }}; --fc-carousel-items-mobile: {{ section.settings.items_per_row_mobile }};"
+>
+  <div class="page-width">
+
+    <div class="fc-carousel__header">
+      <div class="fc-carousel__header-text">
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="fc-carousel__text">{{ section.settings.text }}</div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.collection != blank %}
+        <div class="fc-carousel__nav">
+          <button type="button" class="fc-carousel__arrow" data-fc2-prev aria-label="Previous products">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" class="fc-carousel__arrow" data-fc2-next aria-label="Next products">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.collection != blank %}
+      <div class="fc-carousel__viewport" data-fc2-viewport>
+        <ul class="fc-carousel__track" data-fc2-track>
+          {% for product in section.settings.collection.products limit: section.settings.products_limit %}
+            <li class="fc-carousel__slide">
+              <div class="fc-carousel__card" data-fc2-card>
+
+                <a href="{{ product.url }}" class="fc-carousel__image-link">
+                  <div class="fc-carousel__image-wrap">
+                    {% if product.featured_image %}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 600 }}"
+                        srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                                {{ product.featured_image | image_url: width: 600 }} 600w,
+                                {{ product.featured_image | image_url: width: 800 }} 800w"
+                        sizes="(min-width: 750px) 25vw, 60vw"
+                        alt="{{ product.featured_image.alt | escape }}"
+                        loading="lazy">
+
+                      {% if product.images.size > 1 %}
+                        <img
+                          src="{{ product.images[1] | image_url: width: 600 }}"
+                          alt="{{ product.images[1].alt | escape }}"
+                          class="fc-carousel__image--hover"
+                          loading="lazy">
+                      {% endif %}
+                    {% else %}
+                      <div class="fc-carousel__image-placeholder"></div>
+                    {% endif %}
+
+                    {% if product.compare_at_price > product.price %}
+                      <span class="fc-carousel__badge">Sale</span>
+                    {% endif %}
+                  </div>
+                </a>
+
+                <div class="fc-carousel__card-info">
+                  <a href="{{ product.url }}" class="fc-carousel__card-title">{{ product.title }}</a>
+
+                  <p class="fc-carousel__card-price" data-fc2-price>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="fc-carousel__price--sale">{{ product.price | money }}</span>
+                      <span class="fc-carousel__price--compare">{{ product.compare_at_price | money }}</span>
+                    {% else %}
+                      {{ product.price | money }}
+                    {% endif %}
+                  </p>
+
+                  {% if product.has_only_default_variant == false %}
+                    <select
+                      class="fc-carousel__variant-select"
+                      data-fc2-variant-select
+                      aria-label="Select {{ product.title | escape }} option"
+                    >
+                      {% for variant in product.variants %}
+                        <option
+                          value="{{ variant.id }}"
+                          data-price="{{ variant.price }}"
+                          data-compare-at-price="{{ variant.compare_at_price }}"
+                          {% if variant.available == false %}disabled{% endif %}
+                          {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                        >
+                          {{ variant.title }}{% if variant.available == false %} (Sold out){% endif %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+
+                  {% if product.available %}
+                    <button
+                      type="button"
+                      class="fc-carousel__quick-add"
+                      data-fc2-quick-add
+                      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                    >
+                      Quick Add
+                    </button>
+                  {% else %}
+                    <span class="fc-carousel__quick-add fc-carousel__quick-add--soldout">Sold Out</span>
+                  {% endif %}
+                </div>
+
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if section.settings.show_view_more %}
+        <div class="fc-carousel__view-more">
+          <a href="{{ section.settings.collection.url }}" class="button button--secondary">
+            {{ section.settings.view_more_label | default: "View more" }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <p class="fc-carousel__empty">Select a collection in the section settings.</p>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-fc2-viewport]').forEach(function (viewport) {
+      var section = viewport.closest('.fc-carousel');
+      var track = viewport.querySelector('[data-fc2-track]');
+      var prevBtn = section.querySelector('[data-fc2-prev]');
+      var nextBtn = section.querySelector('[data-fc2-next]');
+
+      function slideWidth() {
+        var slide = track.querySelector('.fc-carousel__slide');
+        if (!slide) return 0;
+        var gap = parseFloat(getComputedStyle(track).gap || 0);
+        return slide.getBoundingClientRect().width + gap;
+      }
+
+      function updateArrows() {
+        var maxScroll = track.scrollWidth - track.clientWidth - 2;
+        prevBtn.disabled = track.scrollLeft <= 2;
+        nextBtn.disabled = track.scrollLeft >= maxScroll;
+      }
+
+      prevBtn && prevBtn.addEventListener('click', function () {
+        track.scrollBy({ left: -slideWidth(), behavior: 'smooth' });
+      });
+
+      nextBtn && nextBtn.addEventListener('click', function () {
+        track.scrollBy({ left: slideWidth(), behavior: 'smooth' });
+      });
+
+      track.addEventListener('scroll', updateArrows);
+      window.addEventListener('resize', updateArrows);
+      updateArrows();
+    });
+
+    function moneyFormat(cents) {
+      // basic fallback formatter; theme's own money format (Shopify.formatMoney) is used if available
+      if (window.Shopify && window.Shopify.formatMoney && window.moneyFormatString) {
+        return window.Shopify.formatMoney(cents, window.moneyFormatString);
+      }
+      return (cents / 100).toFixed(2);
+    }
+
+    document.querySelectorAll('[data-fc2-card]').forEach(function (card) {
+      var select = card.querySelector('[data-fc2-variant-select]');
+      var quickAddBtn = card.querySelector('[data-fc2-quick-add]');
+      var priceEl = card.querySelector('[data-fc2-price]');
+
+      if (select) {
+        select.addEventListener('change', function () {
+          var option = select.options[select.selectedIndex];
+          var price = option.dataset.price;
+          var compareAtPrice = option.dataset.compareAtPrice;
+
+          if (quickAddBtn) {
+            quickAddBtn.dataset.variantId = option.value;
+          }
+
+          if (priceEl && price) {
+            if (compareAtPrice && parseInt(compareAtPrice, 10) > parseInt(price, 10)) {
+              priceEl.innerHTML =
+                '<span class="fc-carousel__price--sale">' + moneyFormat(price) + '</span>' +
+                '<span class="fc-carousel__price--compare">' + moneyFormat(compareAtPrice) + '</span>';
+            } else {
+              priceEl.textContent = moneyFormat(price);
+            }
+          }
+
+          if (option.disabled) {
+            quickAddBtn.textContent = 'Sold Out';
+            quickAddBtn.disabled = true;
+          } else {
+            quickAddBtn.textContent = 'Quick Add';
+            quickAddBtn.disabled = false;
+          }
+        });
+      }
+
+      if (quickAddBtn) {
+        quickAddBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (quickAddBtn.classList.contains('is-loading') || quickAddBtn.disabled) return;
+
+          var variantId = quickAddBtn.dataset.variantId;
+          var originalText = quickAddBtn.textContent;
+
+          quickAddBtn.classList.add('is-loading');
+          quickAddBtn.textContent = 'Adding...';
+
+          fetch((window.Shopify ? window.Shopify.routes.root : '/') + 'cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: variantId, quantity: 1 })
+          })
+            .then(function (res) {
+              if (!res.ok) throw new Error('Add to cart failed');
+              return res.json();
+            })
+            .then(function () {
+              quickAddBtn.textContent = 'Added ✓';
+              quickAddBtn.classList.remove('is-loading');
+              quickAddBtn.classList.add('is-added');
+              document.dispatchEvent(new CustomEvent('cart:refresh'));
+              setTimeout(function () {
+                quickAddBtn.textContent = originalText;
+                quickAddBtn.classList.remove('is-added');
+              }, 1800);
+            })
+            .catch(function () {
+              quickAddBtn.textContent = 'Error';
+              quickAddBtn.classList.remove('is-loading');
+              setTimeout(function () { quickAddBtn.textContent = originalText; }, 1800);
+            });
+        });
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": " Collection Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "items_per_row_desktop",
+      "label": "Products per row (desktop)",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "items_per_row_mobile",
+      "label": "Products per row (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_more",
+      "label": "Show \"view more\" button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_more_label",
+      "label": "Button label",
+      "default": "View more"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": " Collection Carousel"
+    }
+  ]
+}
+{% endschema %}
