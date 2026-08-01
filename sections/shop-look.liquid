@@ -24,13 +24,13 @@
               {{ 'lifestyle-1' | placeholder_svg_tag }}
             {% endif %}
 
-            {% if block.settings.product_1 %}
+            {% if block.settings.product_1 != blank %}
               <button class="look-dot is-active" data-dot data-slide="{{ forloop.index0 }}" data-product="1" style="left:{{ block.settings.product_1_x }}%; top:{{ block.settings.product_1_y }}%;">
                 <span></span>
               </button>
             {% endif %}
 
-            {% if block.settings.product_2 %}
+            {% if block.settings.product_2 != blank %}
               <button class="look-dot" data-dot data-slide="{{ forloop.index0 }}" data-product="2" style="left:{{ block.settings.product_2_x }}%; top:{{ block.settings.product_2_y }}%;">
                 <span></span>
               </button>
@@ -43,28 +43,32 @@
               {
                 "products": [
                   {% assign added = false %}
-                  {% if product_1 %}
+                  {% if product_1 != blank %}
+                    {% assign p1_variant = product_1.selected_or_first_available_variant | default: product_1.variants.first %}
                     {
-                      "id": {{ product_1.selected_or_first_available_variant.id | default: null }},
+                      "id": {{ p1_variant.id | json }},
                       "title": {{ product_1.title | json }},
                       "url": {{ product_1.url | json }},
                       "image": {% if product_1.featured_image %}{{ product_1.featured_image | image_url: width: 500 | json }}{% else %}""{% endif %},
                       "price": {{ product_1.price | money | json }},
                       "compare_at_price": {{ product_1.compare_at_price | money | json }},
+                      "options": {{ product_1.options | json }},
                       "variants": {{ product_1.variants | json }}
                     }
                     {% assign added = true %}
                   {% endif %}
 
-                  {% if product_2 %}
+                  {% if product_2 != blank %}
                     {% if added %},{% endif %}
+                    {% assign p2_variant = product_2.selected_or_first_available_variant | default: product_2.variants.first %}
                     {
-                      "id": {{ product_2.selected_or_first_available_variant.id | default: null }},
+                      "id": {{ p2_variant.id | json }},
                       "title": {{ product_2.title | json }},
                       "url": {{ product_2.url | json }},
                       "image": {% if product_2.featured_image %}{{ product_2.featured_image | image_url: width: 500 | json }}{% else %}""{% endif %},
                       "price": {{ product_2.price | money | json }},
                       "compare_at_price": {{ product_2.compare_at_price | money | json }},
+                      "options": {{ product_2.options | json }},
                       "variants": {{ product_2.variants | json }}
                     }
                   {% endif %}
@@ -109,41 +113,6 @@
     </div>
   </div>
 </shop-look-modal>
-
-<script type="application/json" class="look-slide-data">
-  {
-    "products": [
-      {% assign added = false %}
-      {% if product_1 %}
-        {
-          "id": {{ product_1.selected_or_first_available_variant.id | default: null }},
-          "title": {{ product_1.title | json }},
-          "url": {{ product_1.url | json }},
-          "image": {% if product_1.featured_image %}{{ product_1.featured_image | image_url: width: 500 | json }}{% else %}""{% endif %},
-          "price": {{ product_1.price | money | json }},
-          "compare_at_price": {{ product_1.compare_at_price | money | json }},
-          "options": {{ product_1.options | json }},
-          "variants": {{ product_1.variants | json }}
-        }
-        {% assign added = true %}
-      {% endif %}
-
-      {% if product_2 %}
-        {% if added %},{% endif %}
-        {
-          "id": {{ product_2.selected_or_first_available_variant.id | default: null }},
-          "title": {{ product_2.title | json }},
-          "url": {{ product_2.url | json }},
-          "image": {% if product_2.featured_image %}{{ product_2.featured_image | image_url: width: 500 | json }}{% else %}""{% endif %},
-          "price": {{ product_2.price | money | json }},
-          "compare_at_price": {{ product_2.compare_at_price | money | json }},
-          "options": {{ product_2.options | json }},
-          "variants": {{ product_2.variants | json }}
-        }
-      {% endif %}
-    ]
-  }
-</script>
 
 <script src="{{ 'quick-add-handler.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'shop-the-look.js' | asset_url }}" defer="defer"></script>
