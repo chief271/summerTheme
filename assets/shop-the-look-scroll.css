@@ -93,31 +93,29 @@
     opacity: .85;
 }
 
-/* main stage — panels stacked absolutely so layout never shifts,
-   only opacity/scale crossfades between looks */
+/* main stage — a viewport window with a horizontal track sliding through it.
+   JS translates the track on scroll; layout never shifts, only transform. */
 .shop-look__stage{
     position: relative;
     height: 65vh;
     max-height: 700px;
+    overflow: hidden;
+    border-radius: var(--media-radius, 4px);
+}
+
+.shop-look__stage-track{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    will-change: transform;
 }
 
 .shop-look__panel{
-    position: absolute;
-    inset: 0;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(.98);
-    transition: opacity .5s ease, transform .6s ease, visibility 0s .5s;
-}
-
-.shop-look__panel.is-active{
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-    transition: opacity .5s ease, transform .6s ease;
-    z-index: 1;
 }
 
 .shop-look__image-wrap{
@@ -165,16 +163,25 @@
     color: inherit;
 }
 
-/* product rail — same crossfade-stack trick as the stage */
+/* product rail — same viewport + sliding track trick as the stage */
 .shop-look__products{
     position: relative;
     height: 65vh;
     max-height: 700px;
+    overflow: hidden;
+}
+
+.shop-look__products-track{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    will-change: transform;
 }
 
 .shop-look__product-list{
-    position: absolute;
-    inset: 0;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -182,16 +189,6 @@
     flex-direction: column;
     gap: 2rem;
     overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease, visibility 0s .5s;
-}
-
-.shop-look__product-list.is-active{
-    opacity: 1;
-    visibility: visible;
-    transition: opacity .5s ease;
-    z-index: 1;
 }
 
 .shop-look__product{
@@ -319,8 +316,7 @@
     color: rgb(var(--color-background));
 }
 
-/* ===== MOBILE: disable scroll-jacking, stack everything normally ===== */
-/* ===== MOBILE: Retain sticky scroll, stack layout vertically ===== */
+/* ===== MOBILE: keep the same horizontal scroll-jack, stack layout vertically ===== */
 @media screen and (max-width: 749px) {
   .shop-look__inner {
     padding: 2rem 1.5rem;
@@ -381,15 +377,20 @@
     max-height: none;
   }
 
+  .shop-look__products-track {
+    height: auto;
+    align-items: flex-start;
+  }
+
   .shop-look__product-list {
-    position: absolute;
-    inset: 0;
+    height: auto;
     gap: 1.2rem;
   }
 }
+
 @media (prefers-reduced-motion: reduce){
-    .shop-look__panel,
-    .shop-look__product-list{
+    .shop-look__stage-track,
+    .shop-look__products-track{
         transition: none;
     }
 }
