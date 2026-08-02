@@ -205,6 +205,8 @@
       var thumbs = wrapper.querySelectorAll('[data-shop-look-thumb]');
       var count = panels.length;
       var currentIndex = -1;
+      var mode = null; // 'desktop' (pinned scroll-jack) or 'mobile' (free swipe carousel)
+      var mq = window.matchMedia('(max-width: 749px)');
 
       if (count === 0 || !stage || !stageTrack) return;
 
@@ -221,7 +223,15 @@
         });
       }
 
-      function onScroll() {
+      function syncProductsTrack(progress) {
+        if (!productsEl || !productsTrack) return;
+        var productsWidth = productsEl.offsetWidth;
+        var maxProductsTranslate = productsWidth * (count - 1);
+        productsTrack.style.transform = 'translateX(' + (-progress * maxProductsTranslate) + 'px)';
+      }
+
+      /* ---- desktop: pinned scroll-jack, vertical page scroll drives a horizontal slide ---- */
+      function onWindowScroll() {
         var rect = wrapper.getBoundingClientRect();
         var wrapperHeight = wrapper.offsetHeight;
         var viewportHeight = window.innerHeight;
@@ -235,23 +245,69 @@
           progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
         }
 
-        var index = Math.min(count - 1, Math.round(progress * (count - 1)));
-        setActiveIndex(index);
+        setActiveIndex(Math.min(count - 1, Math.round(progress * (count - 1))));
 
         var stageWidth = stage.offsetWidth;
         var maxStageTranslate = stageWidth * (count - 1);
         stageTrack.style.transform = 'translateX(' + (-progress * maxStageTranslate) + 'px)';
 
-        if (productsEl && productsTrack) {
-          var productsWidth = productsEl.offsetWidth;
-          var maxProductsTranslate = productsWidth * (count - 1);
-          productsTrack.style.transform = 'translateX(' + (-progress * maxProductsTranslate) + 'px)';
+        syncProductsTrack(progress);
+      }
+
+      /* ---- mobile: free native swipe carousel, no pinning/blocking ---- */
+      function onStageScroll() {
+        var maxScroll = stage.scrollWidth - stage.clientWidth;
+        var progress = maxScroll <= 0 ? 0 : Math.min(Math.max(stage.scrollLeft / maxScroll, 0), 1);
+
+        setActiveIndex(Math.min(count - 1, Math.round(progress * (count - 1))));
+        syncProductsTrack(progress);
+      }
+
+      function teardown() {
+        window.removeEventListener('scroll', onWindowScroll);
+        window.removeEventListener('resize', onWindowScroll);
+        stage.removeEventListener('scroll', onStageScroll);
+        window.removeEventListener('resize', onStageScroll);
+      }
+
+      function setupDesktop() {
+        mode = 'desktop';
+        stage.scrollLeft = 0;
+        window.addEventListener('scroll', onWindowScroll, { passive: true });
+        window.addEventListener('resize', onWindowScroll);
+        setActiveIndex(0);
+        onWindowScroll();
+      }
+
+      function setupMobile() {
+        mode = 'mobile';
+        stageTrack.style.transform = 'translateX(0px)';
+        stage.addEventListener('scroll', onStageScroll, { passive: true });
+        window.addEventListener('resize', onStageScroll);
+        setActiveIndex(0);
+        onStageScroll();
+      }
+
+      function refreshMode() {
+        var wantsMobile = mq.matches;
+        if (wantsMobile && mode !== 'mobile') {
+          teardown();
+          setupMobile();
+        } else if (!wantsMobile && mode !== 'desktop') {
+          teardown();
+          setupDesktop();
         }
       }
 
       thumbs.forEach(function (thumb) {
         thumb.addEventListener('click', function () {
           var index = parseInt(thumb.dataset.index, 10);
+
+          if (mode === 'mobile') {
+            stage.scrollTo({ left: index * stage.clientWidth, behavior: 'smooth' });
+            return;
+          }
+
           var wrapperHeight = wrapper.offsetHeight;
           var viewportHeight = window.innerHeight;
           var scrollableDistance = wrapperHeight - viewportHeight;
@@ -265,11 +321,12 @@
         });
       });
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-
-      setActiveIndex(0);
-      onScroll();
+      refreshMode();
+      if (mq.addEventListener) {
+        mq.addEventListener('change', refreshMode);
+      } else if (mq.addListener) {
+        mq.addListener(refreshMode); // older Safari fallback
+      }
     });
 
     /* ---------- quick add modal ---------- */

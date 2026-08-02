@@ -9,146 +9,73 @@
  */
 {
   "sections": {
-    "hero_slideshow_HjmpLE": {
-      "type": "hero-slideshow",
-      "blocks": {
-        "slide_kVTj3k": {
-          "type": "slide",
-          "settings": {
-            "media_type": "video",
-            "video": "shopify://files/videos/Restoring-a-Leather-SnapYT.App_.mp4",
-            "heading": "New Collection",
-            "text": "<p>Discover the latest drop.</p>",
-            "button_1_label": "Shop Now",
-            "button_1_link": "",
-            "button_1_style": "primary",
-            "button_2_label": "",
-            "button_2_link": "",
-            "button_2_style": "secondary"
-          }
-        },
-        "slide_bHjfjy": {
-          "type": "slide",
-          "settings": {
-            "media_type": "image",
-            "image": "shopify://shop_images/photo_2026-07-23_14-34-01.jpg",
-            "heading": "New Collection",
-            "text": "<p>Discover the latest drop.</p>",
-            "button_1_label": "Shop Now",
-            "button_1_link": "",
-            "button_1_style": "primary",
-            "button_2_label": "",
-            "button_2_link": "",
-            "button_2_style": "secondary"
-          }
-        },
-        "slide_Qbrt74": {
-          "type": "slide",
-          "settings": {
-            "media_type": "image",
-            "image": "shopify://shop_images/Gemini_Generated_Image_wq1agqwq1agqwq1a.png",
-            "heading": "New Collection",
-            "text": "<p>Discover the latest drop.</p>",
-            "button_1_label": "Shop Now",
-            "button_1_link": "",
-            "button_1_style": "primary",
-            "button_2_label": "",
-            "button_2_link": "",
-            "button_2_style": "secondary"
-          }
-        }
-      },
-      "block_order": [
-        "slide_kVTj3k",
-        "slide_bHjfjy",
-        "slide_Qbrt74"
-      ],
-      "name": "Hero Slideshow",
+    "hero_editorial_cCyGYi": {
+      "type": "hero-editorial",
+      "name": "Editorial Hero",
       "settings": {
-        "height": 650,
-        "height_mobile": 500,
-        "overlay_opacity": 20,
-        "autoplay": true,
-        "autoplay_speed": 5,
-        "progress_position": "top-right",
-        "show_arrows": false,
+        "product": "classic-ensemble",
+        "badge": "NEW COLLECTION",
+        "heading": "Premium Essentials",
+        "text": "<p>Designed for everyday comfort with timeless style.</p>",
+        "button_label": "Shop Now",
+        "button_link": "",
+        "button2_label": "Explore",
+        "button2_link": "",
+        "show_rating": true,
+        "review_count": "2,000+",
+        "show_product_name": true,
+        "show_price": true,
+        "image_position": "right",
         "color_scheme": ""
       }
     },
-    "text_marquee_NYCgYC": {
-      "type": "text-marquee",
+    "flash_sale_countdown_r9fH9P": {
+      "type": "flash-sale-countdown",
       "blocks": {
-        "product_image_Bajf97": {
-          "type": "product_image",
+        "product_pJYnwK": {
+          "type": "product",
           "settings": {
-            "image": "shopify://shop_images/EC23DD6A-22DC-4B74-BB93-9344485EBB55.jpg",
-            "product": "shorts",
-            "row": "top"
+            "product": "fly-better"
           }
         },
-        "product_image_ykVpQz": {
-          "type": "product_image",
+        "product_abYFbG": {
+          "type": "product",
           "settings": {
-            "image": "shopify://shop_images/2E072952-38FE-436C-87BA-392D938D74BC.jpg",
-            "product": "trouser",
-            "row": "bottom"
+            "product": "fleece-jacket"
+          }
+        },
+        "product_eWVMDJ": {
+          "type": "product",
+          "settings": {
+            "product": "essence-t-shirt"
           }
         }
       },
       "block_order": [
-        "product_image_Bajf97",
-        "product_image_ykVpQz"
+        "product_pJYnwK",
+        "product_abYFbG",
+        "product_eWVMDJ"
       ],
-      "name": "Text Marquee",
+      "name": "Flash Sale Countdown",
       "settings": {
-        "text_top": "NEW ARRIVALS",
-        "text_bottom": "SHOP THE DROP",
-        "speed_top": 25,
-        "speed_bottom": 25,
-        "font_size": 6,
-        "image_size": 130,
-        "gap": 1.5,
-        "repeats_between_images": 3,
-        "pause_on_hover": true,
-        "color_scheme": "",
-        "padding_top": 60,
-        "padding_bottom": 60
+        "eyebrow": "Limited time only",
+        "heading": "Flash beauty deals you'll love",
+        "countdown_end": "2026-12-31T00:00:00",
+        "button_text": "Shop All",
+        "button_link": "",
+        "color_scheme": ""
       }
     },
-    "featured_collections_AXfGW4": {
-      "type": "featured-collections",
-      "blocks": {
-        "collection_8qDEpL": {
-          "type": "collection",
-          "settings": {
-            "collection": "vest",
-            "title": ""
-          }
-        },
-        "collection_wrdfQq": {
-          "type": "collection",
-          "settings": {
-            "collection": "t-shirt",
-            "title": ""
-          }
-        },
-        "collection_R9dRJx": {
-          "type": "collection",
-          "settings": {
-            "collection": "trousers",
-            "title": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection_8qDEpL",
-        "collection_wrdfQq",
-        "collection_R9dRJx"
-      ],
-      "name": "Featured Collections",
+    "featured_collections_carousel_zJgxJp": {
+      "type": "featured-collections-carousel",
+      "name": " Collection Carousel",
       "settings": {
-        "heading": "Featured Collections",
+        "heading": "Shop the Collection",
         "text": "",
+        "collection": "vest",
+        "products_limit": 10,
+        "items_per_row_desktop": "4",
+        "items_per_row_mobile": "2",
         "show_view_more": true,
         "view_more_label": "View more",
         "color_scheme": "",
@@ -156,138 +83,59 @@
         "padding_bottom": 60
       }
     },
-    "shop_look_scroll_TBfbnf": {
-      "type": "shop-look-scroll",
+    "customer_reviews_nY7LhY": {
+      "type": "customer-reviews",
       "blocks": {
-        "look_fEhtVL": {
-          "type": "look",
+        "review_mHdfAV": {
+          "type": "review",
           "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_61lbl061lbl061lb.png",
-            "look_number": "Look 01",
-            "shop_link": "",
-            "shop_label": "Shop the look",
-            "products": [
-              "fleece-jacket",
-              "trouser"
-            ]
+            "quote_title": "Exactly what I needed!",
+            "quote_body": "The quality exceeded my expectations. The fabric feels premium, fits perfectly, and still looks brand new after several washes. I'll definitely order more colors.",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "fly-better"
           }
         },
-        "look_ffJ9h4": {
-          "type": "look",
+        "review_PAMKUC": {
+          "type": "review",
           "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_q24yd3q24yd3q24y.png",
-            "look_number": "Look 01",
-            "shop_link": "",
-            "shop_label": "Shop the look",
-            "products": [
-              "leather-jacket",
-              "tokyo-t-shirt"
-            ]
+            "quote_title": "Will Buy Again!",
+            "quote_body": "I wasn't sure about the sizing, but it fits exactly as described. The stitching is excellent, and it's comfortable enough to wear all day. Great value for the price.",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "classic-ensemble"
+          }
+        },
+        "review_hYmjii": {
+          "type": "review",
+          "settings": {
+            "quote_title": "I'd Recommend!",
+            "quote_body": "Beautiful design and really soft material. Shipping was fast, and the packaging was nice. I only wish there were a few more color options, but overall I'm very happy with my purchase",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "leather-jacket"
           }
         }
       },
       "block_order": [
-        "look_fEhtVL",
-        "look_ffJ9h4"
+        "review_mHdfAV",
+        "review_PAMKUC",
+        "review_hYmjii"
       ],
-      "name": "Shop the Look (Scroll)",
+      "name": "Customer Reviews",
       "settings": {
-        "heading": "Spring Summer 2026",
-        "text": "",
-        "show_thumbnails": true,
-        "scroll_speed": 100,
+        "heading": "Loved by real customers",
+        "text": "<p>Real stories, real results — trusted by beauty lovers everywhere. See what our community is saying about their skincare favorites.</p>",
+        "button_text": "View All Products",
+        "button_link": "shopify://collections",
         "color_scheme": ""
-      }
-    },
-    "story_feedback_6BnWqM": {
-      "type": "story-feedback",
-      "blocks": {
-        "story_eN7zj7": {
-          "type": "story",
-          "settings": {
-            "image": "shopify://shop_images/326E1A24-78BB-4562-B953-317F0C16A1B5.jpg",
-            "customer_name": "",
-            "quote": ""
-          }
-        },
-        "story_rwCFXM": {
-          "type": "story",
-          "settings": {
-            "image": "shopify://shop_images/IMG_2158.jpg",
-            "customer_name": "",
-            "quote": ""
-          }
-        },
-        "story_j96R3h": {
-          "type": "story",
-          "settings": {
-            "image": "shopify://shop_images/IMG-3034.jpg",
-            "customer_name": "",
-            "quote": ""
-          }
-        }
-      },
-      "block_order": [
-        "story_eN7zj7",
-        "story_rwCFXM",
-        "story_j96R3h"
-      ],
-      "name": "Story Feedback",
-      "settings": {
-        "heading": "Join Our Community",
-        "account_name": "",
-        "avatar": "shopify://shop_images/photo_2025-12-30_00-05-24.jpg",
-        "autoplay": true,
-        "autoplay_speed": 4,
-        "color_scheme": "",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "slideshow_3cnFMt": {
-      "type": "slideshow",
-      "blocks": {
-        "slide_TccwFJ": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/BEAMS_leatherjacketsfeellived-infromthe.jpg",
-            "image_overlay_opacity": 0,
-            "heading": "Jackets",
-            "heading_size": "h1",
-            "subheading": "Discover Our Best Selling jackets",
-            "button_label": "See More",
-            "link": "shopify://collections/vest",
-            "button_style_secondary": false,
-            "show_text_box": true,
-            "box_align": "middle-center",
-            "text_alignment": "center",
-            "text_alignment_mobile": "center",
-            "color_scheme": "scheme-2"
-          }
-        }
-      },
-      "block_order": [
-        "slide_TccwFJ"
-      ],
-      "name": "t:sections.slideshow.presets.name",
-      "settings": {
-        "layout": "grid",
-        "slide_height": "medium",
-        "slider_visual": "counter",
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "image_behavior": "none",
-        "show_text_below": true,
-        "accessibility_info": "Slideshow about our brand"
       }
     }
   },
   "order": [
-    "hero_slideshow_HjmpLE",
-    "text_marquee_NYCgYC",
-    "featured_collections_AXfGW4",
-    "shop_look_scroll_TBfbnf",
-    "story_feedback_6BnWqM",
-    "slideshow_3cnFMt"
+    "hero_editorial_cCyGYi",
+    "flash_sale_countdown_r9fH9P",
+    "featured_collections_carousel_zJgxJp",
+    "customer_reviews_nY7LhY"
   ]
 }

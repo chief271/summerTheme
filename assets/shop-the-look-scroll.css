@@ -316,8 +316,20 @@
     color: rgb(var(--color-background));
 }
 
-/* ===== MOBILE: keep the same horizontal scroll-jack, stack layout vertically ===== */
+/* ===== MOBILE: no pinning/blocking — a free, native swipeable carousel ===== */
 @media screen and (max-width: 749px) {
+  /* undo the pinned scroll-jack: the section just takes its natural height
+     and scrolls with the rest of the page like anything else */
+  .shop-look__scroll-wrapper {
+    height: auto;
+  }
+
+  .shop-look__sticky {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
   .shop-look__inner {
     padding: 2rem 1.5rem;
   }
@@ -358,6 +370,19 @@
     width: 100%;
     height: 45vh;
     max-height: 420px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .shop-look__stage::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shop-look__panel {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
   }
 
   .shop-look__image-wrap {

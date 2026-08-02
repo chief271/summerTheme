@@ -1,0 +1,507 @@
+{{ 'customer-reviews.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-reviews color-{{ section.settings.color_scheme }}" data-customer-reviews>
+  <div class="page-width customer-reviews__inner">
+    <div class="customer-reviews__body">
+
+      <div class="customer-reviews__intro">
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="customer-reviews__text">{{ section.settings.text }}</div>
+        {% endif %}
+        {% if section.settings.button_text != blank %}
+          <a href="{{ section.settings.button_link }}" class="customer-reviews__cta">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="customer-reviews__carousel">
+        <ul class="customer-reviews__track" data-customer-reviews-track>
+          {% for block in section.blocks %}
+            {% if block.type == "review" %}
+              {% assign product = block.settings.product %}
+              <li class="customer-reviews__card" data-customer-reviews-card {{ block.shopify_attributes }}>
+                {% if block.settings.quote_title != blank %}
+                  <p class="customer-reviews__quote-title">{{ block.settings.quote_title }}</p>
+                {% endif %}
+
+                {% if block.settings.quote_body != blank %}
+                  <p class="customer-reviews__quote-body">&ldquo;{{ block.settings.quote_body }}&rdquo;</p>
+                {% endif %}
+
+                <div class="customer-reviews__meta">
+                  <div class="customer-reviews__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                    {% for i in (1..5) %}
+                      <svg viewBox="0 0 20 20" class="customer-reviews__star{% if i > block.settings.rating %} is-empty{% endif %}" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z" fill="currentColor"/>
+                      </svg>
+                    {% endfor %}
+                  </div>
+                  {% if block.settings.author != blank %}
+                    <p class="customer-reviews__author">{{ block.settings.author }}</p>
+                  {% endif %}
+                </div>
+
+                {% if product != blank %}
+                  <div class="customer-reviews__divider"></div>
+
+                  <div class="customer-reviews__product">
+                    <a href="{{ product.url }}" class="customer-reviews__product-link">
+                      <div class="customer-reviews__product-image-wrap">
+                        {% if product.featured_image %}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 200 }}"
+                            alt="{{ product.featured_image.alt | escape }}"
+                            loading="lazy">
+                        {% else %}
+                          <div class="customer-reviews__product-placeholder"></div>
+                        {% endif %}
+                      </div>
+                      <div class="customer-reviews__product-info">
+                        <p class="customer-reviews__product-title">{{ product.title }}</p>
+                        <p class="customer-reviews__product-price">
+                          {% if product.compare_at_price > product.price %}
+                            <span class="customer-reviews__price--compare">{{ product.compare_at_price | money }}</span>
+                            <span class="customer-reviews__price--sale">From {{ product.price | money }}</span>
+                          {% else %}
+                            {{ product.price | money }}
+                          {% endif %}
+                        </p>
+                      </div>
+                    </a>
+
+                    {% if product.available %}
+                      <button
+                        type="button"
+                        class="customer-reviews__quick-add"
+                        data-customer-reviews-quick-add
+                        data-product-id="{{ product.id }}"
+                        aria-label="Quick add {{ product.title | escape }}"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M6 8h12l-1 12H7L6 8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                          <path d="M9 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                      </button>
+
+                      <script type="application/json" data-customer-reviews-product-json="{{ product.id }}">
+                        {
+                          "id": {{ product.id | json }},
+                          "title": {{ product.title | json }},
+                          "url": {{ product.url | json }},
+                          "image": {{ product.featured_image | image_url: width: 400 | json }},
+                          "options": {{ product.options_with_values | json }},
+                          "variants": [
+                            {% for variant in product.variants %}
+                              {
+                                "id": {{ variant.id | json }},
+                                "title": {{ variant.title | json }},
+                                "available": {{ variant.available | json }},
+                                "price": {{ variant.price | json }},
+                                "compare_at_price": {{ variant.compare_at_price | json }},
+                                "options": {{ variant.options | json }},
+                                "image": {% if variant.featured_image %}{{ variant.featured_image | image_url: width: 400 | json }}{% else %}null{% endif %}
+                              }{% unless forloop.last %},{% endunless %}
+                            {% endfor %}
+                          ]
+                        }
+                      </script>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <div class="customer-reviews__controls">
+          <div class="customer-reviews__progress" data-customer-reviews-progress>
+            <div class="customer-reviews__progress-thumb" data-customer-reviews-progress-thumb></div>
+          </div>
+
+          <div class="customer-reviews__nav">
+            <button type="button" class="customer-reviews__arrow" data-customer-reviews-prev aria-label="Previous">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="customer-reviews__arrow" data-customer-reviews-next aria-label="Next">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Quick add modal (shared, single instance) -->
+<div class="customer-reviews-modal" data-customer-reviews-modal aria-hidden="true">
+  <div class="customer-reviews-modal__backdrop" data-customer-reviews-modal-close></div>
+  <div class="customer-reviews-modal__dialog" role="dialog" aria-modal="true" aria-label="Quick add">
+    <button type="button" class="customer-reviews-modal__close" data-customer-reviews-modal-close aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="customer-reviews-modal__image-wrap">
+      <img data-customer-reviews-modal-image src="" alt="">
+    </div>
+
+    <div class="customer-reviews-modal__info">
+      <p class="customer-reviews-modal__title" data-customer-reviews-modal-title></p>
+      <p class="customer-reviews-modal__price" data-customer-reviews-modal-price></p>
+
+      <div class="customer-reviews-modal__options" data-customer-reviews-modal-options></div>
+
+      <button type="button" class="customer-reviews-modal__add" data-customer-reviews-modal-add disabled>
+        Add to Cart
+      </button>
+      <p class="customer-reviews-modal__unavailable" data-customer-reviews-modal-unavailable hidden>This combination is unavailable</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-customer-reviews]').forEach(function (section) {
+      var track = section.querySelector('[data-customer-reviews-track]');
+      var prevBtn = section.querySelector('[data-customer-reviews-prev]');
+      var nextBtn = section.querySelector('[data-customer-reviews-next]');
+      var progress = section.querySelector('[data-customer-reviews-progress]');
+      var progressThumb = section.querySelector('[data-customer-reviews-progress-thumb]');
+      if (!track) return;
+
+      function cardStep() {
+        var card = track.querySelector('[data-customer-reviews-card]');
+        if (!card) return track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0);
+        return card.getBoundingClientRect().width + gap;
+      }
+
+      function update() {
+        var maxScroll = track.scrollWidth - track.clientWidth;
+
+        if (prevBtn) prevBtn.disabled = track.scrollLeft <= 4;
+        if (nextBtn) nextBtn.disabled = track.scrollLeft >= maxScroll - 4;
+
+        if (progress && progressThumb) {
+          var visibleRatio = Math.min(track.clientWidth / track.scrollWidth, 1);
+          var progressWidth = progress.clientWidth;
+          var thumbWidth = Math.max(visibleRatio * progressWidth, 24);
+          var scrollProgress = maxScroll <= 0 ? 0 : track.scrollLeft / maxScroll;
+          var maxThumbTranslate = progressWidth - thumbWidth;
+
+          progressThumb.style.width = thumbWidth + 'px';
+          progressThumb.style.transform = 'translateX(' + (scrollProgress * maxThumbTranslate) + 'px)';
+        }
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function () {
+          track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+        });
+      }
+
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    });
+
+    /* ---------- quick add modal (namespaced to customer-reviews) ---------- */
+    var modal = document.querySelector('[data-customer-reviews-modal]');
+    if (!modal) return;
+
+    var modalImage = modal.querySelector('[data-customer-reviews-modal-image]');
+    var modalTitle = modal.querySelector('[data-customer-reviews-modal-title]');
+    var modalPrice = modal.querySelector('[data-customer-reviews-modal-price]');
+    var modalOptions = modal.querySelector('[data-customer-reviews-modal-options]');
+    var modalAddBtn = modal.querySelector('[data-customer-reviews-modal-add]');
+    var modalUnavailable = modal.querySelector('[data-customer-reviews-modal-unavailable]');
+
+    var currentProduct = null;
+    var selections = {};
+
+    function moneyFormat(cents) {
+      if (window.Shopify && window.Shopify.formatMoney && window.moneyFormatString) {
+        return window.Shopify.formatMoney(cents, window.moneyFormatString);
+      }
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function findMatchingVariant() {
+      if (!currentProduct) return null;
+      return currentProduct.variants.find(function (variant) {
+        return currentProduct.options.every(function (opt, i) {
+          return variant.options[i] === selections[opt.name];
+        });
+      });
+    }
+
+    function isValueAvailable(optionIndex, value) {
+      return currentProduct.variants.some(function (variant) {
+        if (variant.options[optionIndex] !== value) return false;
+        return currentProduct.options.every(function (opt, i) {
+          if (i === optionIndex) return true;
+          if (!selections[opt.name]) return true;
+          return variant.options[i] === selections[opt.name];
+        }) && variant.available;
+      });
+    }
+
+    function renderOptions() {
+      modalOptions.innerHTML = '';
+
+      currentProduct.options.forEach(function (opt, optionIndex) {
+        var group = document.createElement('div');
+        group.className = 'customer-reviews-modal__option-group';
+
+        var label = document.createElement('p');
+        label.className = 'customer-reviews-modal__option-label';
+        label.textContent = opt.name;
+        group.appendChild(label);
+
+        var swatchRow = document.createElement('div');
+        swatchRow.className = 'customer-reviews-modal__swatches';
+
+        opt.values.forEach(function (value) {
+          var swatch = document.createElement('button');
+          swatch.type = 'button';
+          swatch.className = 'customer-reviews-modal__swatch';
+          swatch.textContent = value;
+          swatch.dataset.value = value;
+
+          if (selections[opt.name] === value) swatch.classList.add('is-selected');
+          if (!isValueAvailable(optionIndex, value)) swatch.classList.add('is-unavailable');
+
+          swatch.addEventListener('click', function () {
+            selections[opt.name] = value;
+            renderOptions();
+            updateSelectionState();
+          });
+
+          swatchRow.appendChild(swatch);
+        });
+
+        group.appendChild(swatchRow);
+        modalOptions.appendChild(group);
+      });
+    }
+
+    function updateSelectionState() {
+      var variant = findMatchingVariant();
+
+      if (variant) {
+        modalPrice.innerHTML = variant.compare_at_price && variant.compare_at_price > variant.price
+          ? '<span class="customer-reviews-modal__price--sale">' + moneyFormat(variant.price) + '</span>' +
+            '<span class="customer-reviews-modal__price--compare">' + moneyFormat(variant.compare_at_price) + '</span>'
+          : moneyFormat(variant.price);
+
+        if (variant.image) modalImage.src = variant.image;
+
+        modalAddBtn.dataset.variantId = variant.id;
+
+        if (variant.available) {
+          modalAddBtn.disabled = false;
+          modalAddBtn.hidden = false;
+          modalUnavailable.hidden = true;
+        } else {
+          modalAddBtn.disabled = true;
+          modalAddBtn.hidden = true;
+          modalUnavailable.hidden = false;
+        }
+      } else {
+        modalAddBtn.disabled = true;
+        modalAddBtn.hidden = true;
+        modalUnavailable.hidden = false;
+      }
+    }
+
+    function openModal(productData) {
+      currentProduct = productData;
+      selections = {};
+
+      var defaultVariant = productData.variants.find(function (v) { return v.available; }) || productData.variants[0];
+      if (defaultVariant) {
+        productData.options.forEach(function (opt, i) {
+          selections[opt.name] = defaultVariant.options[i];
+        });
+      }
+
+      modalTitle.textContent = productData.title;
+      modalImage.src = defaultVariant && defaultVariant.image ? defaultVariant.image : productData.image;
+      modalImage.alt = productData.title;
+
+      renderOptions();
+      updateSelectionState();
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentProduct = null;
+    }
+
+    document.querySelectorAll('[data-customer-reviews-quick-add]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var productId = btn.dataset.productId;
+        var jsonEl = document.querySelector('[data-customer-reviews-product-json="' + productId + '"]');
+        if (!jsonEl) return;
+
+        try {
+          var productData = JSON.parse(jsonEl.textContent);
+          openModal(productData);
+        } catch (err) {
+          console.error('Could not parse product data', err);
+        }
+      });
+    });
+
+    modal.querySelectorAll('[data-customer-reviews-modal-close]').forEach(function (el) {
+      el.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    modalAddBtn.addEventListener('click', function () {
+      if (modalAddBtn.disabled || modalAddBtn.classList.contains('is-loading')) return;
+
+      var variantId = modalAddBtn.dataset.variantId;
+      var originalText = modalAddBtn.textContent;
+
+      modalAddBtn.classList.add('is-loading');
+      modalAddBtn.textContent = 'Adding...';
+
+      fetch((window.Shopify ? window.Shopify.routes.root : '/') + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Add to cart failed');
+          return res.json();
+        })
+        .then(function () {
+          modalAddBtn.textContent = 'Added ✓';
+          modalAddBtn.classList.remove('is-loading');
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          setTimeout(function () {
+            modalAddBtn.textContent = originalText;
+            closeModal();
+          }, 900);
+        })
+        .catch(function () {
+          modalAddBtn.textContent = 'Error';
+          modalAddBtn.classList.remove('is-loading');
+          setTimeout(function () { modalAddBtn.textContent = originalText; }, 1500);
+        });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by real customers"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Real stories, real results — trusted by beauty lovers everywhere. See what our community is saying about their skincare favorites.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View All Products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "quote_title",
+          "label": "Quote title",
+          "default": "Exactly what I needed!"
+        },
+        {
+          "type": "textarea",
+          "id": "quote_body",
+          "label": "Quote",
+          "default": "My skin feels so much calmer, softer, and deeply nourished after just a few days."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer name",
+          "default": "Happy Customer"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Linked product",
+          "info": "Optional — shows a mini product card with quick add"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Customer Reviews",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

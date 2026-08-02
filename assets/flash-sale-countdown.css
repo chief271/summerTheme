@@ -1,0 +1,289 @@
+.flash-sale{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 74rem;
+}
+
+.flash-sale__left{
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+}
+
+.flash-sale__left-inner{
+    width: 100%;
+    max-width: 44rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flash-sale__eyebrow{
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin: 0 0 1.6rem;
+    opacity: .8;
+}
+
+.flash-sale__heading{
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: calc(3.4rem * var(--font-heading-scale));
+    line-height: 1.2;
+    margin: 0 0 3.6rem;
+}
+
+.flash-sale__countdown{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1.4rem;
+    margin-bottom: 3.6rem;
+}
+
+.flash-sale__countdown-unit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+    min-width: 6.4rem;
+}
+
+.flash-sale__countdown-number{
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: 4.4rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.flash-sale__countdown-label{
+    font-size: 1.3rem;
+    opacity: .65;
+}
+
+.flash-sale__countdown-colon{
+    font-size: 3rem;
+    font-weight: 600;
+    opacity: .4;
+    transform: translateY(-.6rem);
+}
+
+.flash-sale__button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 3.6rem;
+    background: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+.flash-sale__button:hover{
+    transform: translateY(-2px);
+    opacity: .9;
+}
+
+/* ---------- right side ---------- */
+.flash-sale__right{
+    position: relative;
+    overflow: hidden;
+    background: #cfd8c8;
+}
+
+.flash-sale__bg-image{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.flash-sale__stage{
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-48%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    z-index: 1;
+}
+
+.flash-sale__cards{
+    position: relative;
+    width: 28rem;
+    height: 38rem;
+}
+
+.flash-sale__card{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(.97);
+    transition: opacity .5s ease, transform .5s ease, visibility 0s .5s;
+}
+
+.flash-sale__card.is-active{
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition: opacity .5s ease, transform .5s ease;
+    z-index: 1;
+}
+
+.flash-sale__card-image-wrap{
+    flex: 1;
+    margin: 1.2rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f2f2ee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flash-sale__card-image-wrap img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.flash-sale__card-placeholder{
+    width: 100%;
+    height: 100%;
+    background: #f2f2ee;
+}
+
+.flash-sale__card-info{
+    padding: 1.6rem 2rem 2.2rem;
+}
+
+.flash-sale__card-type{
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #9a9a9a;
+    margin: 0 0 .8rem;
+}
+
+.flash-sale__card-title{
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #121212;
+    margin: 0 0 .5rem;
+}
+
+.flash-sale__card-price{
+    font-size: 1.4rem;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: .8rem;
+}
+
+.flash-sale__price--compare{
+    text-decoration: line-through;
+    color: #9a9a9a;
+}
+
+.flash-sale__price--sale{
+    font-weight: 700;
+    color: #121212;
+}
+
+.flash-sale__dots{
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.flash-sale__dot{
+    width: 1rem;
+    height: .5rem;
+    border-radius: 100px;
+    border: none;
+    padding: 0;
+    background: rgba(255,255,255,.45);
+    cursor: pointer;
+    transition: width .25s ease, background .25s ease;
+}
+
+.flash-sale__dot.is-active{
+    width: 2.6rem;
+    background: #fff;
+}
+
+@media screen and (max-width: 989px){
+  .flash-sale__stage{
+    right: 50%;
+    transform: translate(50%, -48%);
+  }
+}
+
+@media screen and (max-width: 749px){
+  .flash-sale{
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .flash-sale__left{
+    padding: 3.5rem 2rem;
+  }
+
+  .flash-sale__heading{
+    font-size: 2.6rem;
+    margin-bottom: 2.6rem;
+  }
+
+  .flash-sale__countdown{
+    gap: .8rem;
+    margin-bottom: 2.6rem;
+  }
+
+  .flash-sale__countdown-unit{
+    min-width: 5rem;
+  }
+
+  .flash-sale__countdown-number{
+    font-size: 3.2rem;
+  }
+
+  .flash-sale__right{
+    min-height: 52rem;
+  }
+
+  .flash-sale__cards{
+    width: 22rem;
+    height: 30rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .flash-sale__card{
+    transition: none;
+  }
+}

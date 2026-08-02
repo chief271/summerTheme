@@ -1,0 +1,282 @@
+{{ 'flash-sale-countdown.css' | asset_url | stylesheet_tag }}
+
+<div class="flash-sale color-{{ section.settings.color_scheme }}" data-flash-sale>
+  <div class="flash-sale__left">
+    <div class="flash-sale__left-inner">
+      {% if section.settings.eyebrow != blank %}
+        <p class="flash-sale__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="flash-sale__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      <div
+        class="flash-sale__countdown"
+        data-flash-sale-countdown
+        data-target="{{ section.settings.countdown_end }}"
+      >
+        <div class="flash-sale__countdown-unit">
+          <span class="flash-sale__countdown-number" data-flash-sale-days>00</span>
+          <span class="flash-sale__countdown-label">Days</span>
+        </div>
+        <span class="flash-sale__countdown-colon">:</span>
+        <div class="flash-sale__countdown-unit">
+          <span class="flash-sale__countdown-number" data-flash-sale-hours>00</span>
+          <span class="flash-sale__countdown-label">Hours</span>
+        </div>
+        <span class="flash-sale__countdown-colon">:</span>
+        <div class="flash-sale__countdown-unit">
+          <span class="flash-sale__countdown-number" data-flash-sale-minutes>00</span>
+          <span class="flash-sale__countdown-label">Minutes</span>
+        </div>
+        <span class="flash-sale__countdown-colon">:</span>
+        <div class="flash-sale__countdown-unit">
+          <span class="flash-sale__countdown-number" data-flash-sale-seconds>00</span>
+          <span class="flash-sale__countdown-label">Seconds</span>
+        </div>
+      </div>
+
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="flash-sale__button">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="flash-sale__right">
+    {% if section.settings.background_image != blank %}
+      <img
+        class="flash-sale__bg-image"
+        src="{{ section.settings.background_image | image_url: width: 1800 }}"
+        srcset="{{ section.settings.background_image | image_url: width: 900 }} 900w,
+                {{ section.settings.background_image | image_url: width: 1400 }} 1400w,
+                {{ section.settings.background_image | image_url: width: 1800 }} 1800w"
+        sizes="50vw"
+        alt="{{ section.settings.background_image.alt | escape }}"
+        loading="lazy">
+    {% endif %}
+
+    {% assign product_blocks = section.blocks | where: "type", "product" %}
+    {% if product_blocks.size > 0 %}
+      <div class="flash-sale__stage">
+        <div class="flash-sale__cards" data-flash-sale-cards>
+          {% for block in product_blocks %}
+            {% assign product = block.settings.product %}
+            {% if product != blank %}
+              <a
+                href="{{ product.url }}"
+                class="flash-sale__card{% if forloop.first %} is-active{% endif %}"
+                data-flash-sale-card
+                {{ block.shopify_attributes }}
+              >
+                <div class="flash-sale__card-image-wrap">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 500 }}"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      loading="lazy">
+                  {% else %}
+                    <div class="flash-sale__card-placeholder"></div>
+                  {% endif %}
+                </div>
+                <div class="flash-sale__card-info">
+                  {% if product.type != blank %}
+                    <p class="flash-sale__card-type">{{ product.type }}</p>
+                  {% endif %}
+                  <p class="flash-sale__card-title">{{ product.title }}</p>
+                  <p class="flash-sale__card-price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="flash-sale__price--compare">{{ product.compare_at_price | money }}</span>
+                      <span class="flash-sale__price--sale">From {{ product.price | money }}</span>
+                    {% else %}
+                      {{ product.price | money }}
+                    {% endif %}
+                  </p>
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if product_blocks.size > 1 %}
+          <div class="flash-sale__dots" data-flash-sale-dots>
+            {% for block in product_blocks %}
+              <button
+                type="button"
+                class="flash-sale__dot{% if forloop.first %} is-active{% endif %}"
+                data-flash-sale-dot
+                data-index="{{ forloop.index0 }}"
+                aria-label="Show product {{ forloop.index }}"
+              ></button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  (function () {
+    /* ---------- countdown ---------- */
+    document.querySelectorAll('[data-flash-sale-countdown]').forEach(function (el) {
+      var target = new Date(el.dataset.target).getTime();
+      var daysEl = el.querySelector('[data-flash-sale-days]');
+      var hoursEl = el.querySelector('[data-flash-sale-hours]');
+      var minutesEl = el.querySelector('[data-flash-sale-minutes]');
+      var secondsEl = el.querySelector('[data-flash-sale-seconds]');
+
+      if (isNaN(target)) return;
+
+      function pad(n) {
+        return String(Math.max(n, 0)).padStart(2, '0');
+      }
+
+      function tick() {
+        var diff = target - Date.now();
+
+        if (diff <= 0) {
+          daysEl.textContent = '00';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          clearInterval(timer);
+          return;
+        }
+
+        var totalSeconds = Math.floor(diff / 1000);
+        var days = Math.floor(totalSeconds / 86400);
+        var hours = Math.floor((totalSeconds % 86400) / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        var seconds = totalSeconds % 60;
+
+        daysEl.textContent = pad(days);
+        hoursEl.textContent = pad(hours);
+        minutesEl.textContent = pad(minutes);
+        secondsEl.textContent = pad(seconds);
+      }
+
+      tick();
+      var timer = setInterval(tick, 1000);
+    });
+
+    /* ---------- product card crossfade ---------- */
+    document.querySelectorAll('[data-flash-sale-cards]').forEach(function (stack) {
+      var cards = stack.querySelectorAll('[data-flash-sale-card]');
+      var dotsWrap = stack.parentElement.querySelector('[data-flash-sale-dots]');
+      var dots = dotsWrap ? dotsWrap.querySelectorAll('[data-flash-sale-dot]') : [];
+      var count = cards.length;
+      var current = 0;
+      var autoplay = null;
+
+      if (count <= 1) return;
+
+      function show(index) {
+        current = (index + count) % count;
+        cards.forEach(function (card, i) {
+          card.classList.toggle('is-active', i === current);
+        });
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('is-active', i === current);
+        });
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+        autoplay = setInterval(function () { show(current + 1); }, 4000);
+      }
+
+      function stopAutoplay() {
+        if (autoplay) clearInterval(autoplay);
+      }
+
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+          show(parseInt(dot.dataset.index, 10));
+          startAutoplay();
+        });
+      });
+
+      stack.addEventListener('mouseenter', stopAutoplay);
+      stack.addEventListener('mouseleave', startAutoplay);
+
+      show(0);
+      startAutoplay();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Flash Sale Countdown",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Limited time only"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Flash beauty deals you'll love"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end",
+      "label": "Countdown end date",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS (24-hour, store time zone)",
+      "default": "2026-12-31T00:00:00"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Right side background image"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme (left panel)",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Flash Sale Countdown",
+      "blocks": [
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
