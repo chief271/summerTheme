@@ -1,0 +1,141 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_editorial_cCyGYi": {
+      "type": "hero-editorial",
+      "name": "Editorial Hero",
+      "settings": {
+        "product": "classic-ensemble",
+        "badge": "NEW COLLECTION",
+        "heading": "Premium Essentials",
+        "text": "<p>Designed for everyday comfort with timeless style.</p>",
+        "button_label": "Shop Now",
+        "button_link": "",
+        "button2_label": "Explore",
+        "button2_link": "",
+        "show_rating": true,
+        "review_count": "2,000+",
+        "show_product_name": true,
+        "show_price": true,
+        "image_position": "right",
+        "color_scheme": ""
+      }
+    },
+    "flash_sale_countdown_r9fH9P": {
+      "type": "flash-sale-countdown",
+      "blocks": {
+        "product_pJYnwK": {
+          "type": "product",
+          "settings": {
+            "product": "fly-better"
+          }
+        },
+        "product_abYFbG": {
+          "type": "product",
+          "settings": {
+            "product": "fleece-jacket"
+          }
+        },
+        "product_eWVMDJ": {
+          "type": "product",
+          "settings": {
+            "product": "essence-t-shirt"
+          }
+        }
+      },
+      "block_order": [
+        "product_pJYnwK",
+        "product_abYFbG",
+        "product_eWVMDJ"
+      ],
+      "name": "Flash Sale Countdown",
+      "settings": {
+        "eyebrow": "Limited time only",
+        "heading": "Flash beauty deals you'll love",
+        "countdown_end": "2026-12-31T00:00:00",
+        "button_text": "Shop All",
+        "button_link": "",
+        "color_scheme": ""
+      }
+    },
+    "featured_collections_carousel_zJgxJp": {
+      "type": "featured-collections-carousel",
+      "name": " Collection Carousel",
+      "settings": {
+        "heading": "Shop the Collection",
+        "text": "",
+        "collection": "vest",
+        "products_limit": 10,
+        "items_per_row_desktop": "4",
+        "items_per_row_mobile": "2",
+        "show_view_more": true,
+        "view_more_label": "View more",
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "customer_reviews_nY7LhY": {
+      "type": "customer-reviews",
+      "blocks": {
+        "review_mHdfAV": {
+          "type": "review",
+          "settings": {
+            "quote_title": "Exactly what I needed!",
+            "quote_body": "The quality exceeded my expectations. The fabric feels premium, fits perfectly, and still looks brand new after several washes. I'll definitely order more colors.",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "fly-better"
+          }
+        },
+        "review_PAMKUC": {
+          "type": "review",
+          "settings": {
+            "quote_title": "Will Buy Again!",
+            "quote_body": "I wasn't sure about the sizing, but it fits exactly as described. The stitching is excellent, and it's comfortable enough to wear all day. Great value for the price.",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "classic-ensemble"
+          }
+        },
+        "review_hYmjii": {
+          "type": "review",
+          "settings": {
+            "quote_title": "I'd Recommend!",
+            "quote_body": "Beautiful design and really soft material. Shipping was fast, and the packaging was nice. I only wish there were a few more color options, but overall I'm very happy with my purchase",
+            "rating": 5,
+            "author": "Happy Customer",
+            "product": "leather-jacket"
+          }
+        }
+      },
+      "block_order": [
+        "review_mHdfAV",
+        "review_PAMKUC",
+        "review_hYmjii"
+      ],
+      "name": "Customer Reviews",
+      "settings": {
+        "heading": "Loved by real customers",
+        "text": "<p>Real stories, real results — trusted by beauty lovers everywhere. See what our community is saying about their skincare favorites.</p>",
+        "button_text": "View All Products",
+        "button_link": "shopify://collections",
+        "color_scheme": ""
+      }
+    }
+  },
+  "order": [
+    "hero_editorial_cCyGYi",
+    "flash_sale_countdown_r9fH9P",
+    "featured_collections_carousel_zJgxJp",
+    "customer_reviews_nY7LhY"
+  ]
+}

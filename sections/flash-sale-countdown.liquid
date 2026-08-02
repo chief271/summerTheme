@@ -46,17 +46,7 @@
   </div>
 
   <div class="flash-sale__right">
-    {% if section.settings.background_image != blank %}
-      <img
-        class="flash-sale__bg-image"
-        src="{{ section.settings.background_image | image_url: width: 1800 }}"
-        srcset="{{ section.settings.background_image | image_url: width: 900 }} 900w,
-                {{ section.settings.background_image | image_url: width: 1400 }} 1400w,
-                {{ section.settings.background_image | image_url: width: 1800 }} 1800w"
-        sizes="50vw"
-        alt="{{ section.settings.background_image.alt | escape }}"
-        loading="lazy">
-    {% endif %}
+    
 
     {% assign product_blocks = section.blocks | where: "type", "product" %}
     {% if product_blocks.size > 0 %}
@@ -122,7 +112,8 @@
   (function () {
     /* ---------- countdown ---------- */
     document.querySelectorAll('[data-flash-sale-countdown]').forEach(function (el) {
-      var target = new Date(el.dataset.target).getTime();
+      var targetString = (el.dataset.target || '').replace(/-/g, "/").replace('T', ' ');
+      var target = new Date(targetString).getTime();
       var daysEl = el.querySelector('[data-flash-sale-days]');
       var hoursEl = el.querySelector('[data-flash-sale-hours]');
       var minutesEl = el.querySelector('[data-flash-sale-minutes]');
@@ -245,9 +236,37 @@
       "label": "Button link"
     },
     {
-      "type": "image_picker",
-      "id": "background_image",
-      "label": "Right side background image"
+      "type": "header",
+      "content": "Right side background"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Gradient color 1",
+      "default": "#c8d9c0"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Gradient color 2",
+      "default": "#8fae7c"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_3",
+      "label": "Gradient color 3",
+      "default": "#4f6b43"
+    },
+    {
+      "type": "range",
+      "id": "gradient_speed",
+      "label": "Animation speed",
+      "info": "Seconds per loop — lower is faster",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "unit": "s",
+      "default": 12
     },
     {
       "type": "color_scheme",
@@ -280,3 +299,4 @@
   ]
 }
 {% endschema %}
+
